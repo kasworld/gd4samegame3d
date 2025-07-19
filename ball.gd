@@ -3,16 +3,18 @@ class_name Ball
 
 signal ball_mouse_entered(me :Ball)
 signal ball_mouse_exited(me :Ball)
+signal ball_mouse_pressed(me :Ball)
 
-var pos2d :Vector2i
 var type_num :int
 
 func _to_string() -> String:
-	return "Ball%d-%s" % [type_num, pos2d]
+	return "Ball%d-%s" % [type_num, get_pos2d()]
 
-func set_ballinfo(typenum :int, pos :Vector2i) -> Ball:
+func get_pos2d() -> Vector2i:
+	return Vector2i(position.x, position.y)
+
+func set_type_num(typenum :int) -> Ball:
 	type_num = typenum
-	pos2d = pos
 	return self
 	
 func set_material(mat :Material) -> Ball:
@@ -48,3 +50,7 @@ func stop_animation() -> void:
 	$AnimationPlayer.play("RESET")
 func start_animation() -> void:
 	$AnimationPlayer.play("new_animation")
+
+func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.is_pressed():
+		ball_mouse_pressed.emit(self)
