@@ -27,7 +27,7 @@ shadow_enabled = true
 sky_mode = 1
 
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, 0.5, -0.5, 0, 0, 0)
+transform = Transform3D(0.707107, -0.5, -0.5, 0, 0.707107, -0.707107, 0.707107, 0.5, 0.5, 0, 0, 0)
 shadow_enabled = true
 sky_mode = 1
 
@@ -38,3 +38,5 @@ theme = SubResource("Theme_h2yge")
 
 [node name="WallBox" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_ig7tw")
+
+[node name="BallContainer" type="Node3D" parent="."]

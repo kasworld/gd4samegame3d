@@ -3,10 +3,21 @@ extends Node3D
 func _ready() -> void:
 	set_walls()
 	reset_camera_pos()
+	add_balls()
 
 func set_walls() -> void:
 	$WallBox.mesh.size = Config.WorldSize
-	$WallBox.position = Config.WorldSize/2
+	$WallBox.position = Config.WorldSize/2 - Vector3(0.5,0.5,0)
+	$OmniLight3D.position = Config.WorldSize/2
+
+func add_balls() -> void:
+	for x in Config.WorldSize.x:
+		for y in Config.WorldSize.y:
+			var b = preload("res://ball.tscn").instantiate(
+				).set_material(Config.tex_array.pick_random())
+			b.position = Vector3(x,y,0.5)
+			b.rotation.y = PI
+			$BallContainer.add_child(b)
 
 var camera_move = false
 func _process(delta: float) -> void:
@@ -36,6 +47,6 @@ func _on_카메라변경_pressed() -> void:
 		reset_camera_pos()
 
 func reset_camera_pos()->void:
-	$Camera3D.position = Vector3(Config.WorldSize.x/2, Config.WorldSize.y/2, Config.WorldSize.length()*0.4 )
+	$Camera3D.position = Vector3(Config.WorldSize.x/2, Config.WorldSize.y/2, Config.WorldSize.length()*0.55 )
 	$Camera3D.look_at(Config.WorldSize/2)
 	$Camera3D.far = Config.WorldSize.length()
