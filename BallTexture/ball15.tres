@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cghm1ccbhulj4"]
+
+[ext_resource type="Texture2D" uid="uid://dig2m1crthw26" path="res://BallTexture/Ball15.jpg" id="1_mfuob"]
+
+[resource]
+resource_local_to_scene = true
+albedo_texture = ExtResource("1_mfuob")
+clearcoat_enabled = true
