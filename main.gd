@@ -17,12 +17,14 @@ func add_balls() -> void:
 	for y in Config.WorldSize.y:
 		ball_grid.append([])
 		for x in Config.WorldSize.x:
-			var b = preload("res://ball.tscn").instantiate().init("Ball(%d,%d)" %[x,y]
-				).set_material(Config.tex_array.pick_random())
+			var ball_num = randi_range(0,Config.tex_array.size()-1)
+			var b = preload("res://ball.tscn").instantiate().set_ballname("Ball%d(%d,%d)" %[ball_num+9,x,y]
+				).set_material(Config.tex_array[ball_num])
 			b.position = Vector3(x,y,0.5)
 			$BallContainer.add_child(b)
 			ball_grid[-1].append(b)
-			
+	print(ball_grid)
+	
 var camera_move = false
 func _process(delta: float) -> void:
 	var t = Time.get_unix_time_from_system() /-3.0
