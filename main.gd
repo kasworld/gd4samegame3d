@@ -18,7 +18,7 @@ func add_balls() -> void:
 		ball_grid.append([])
 		for x in Config.WorldSize.x:
 			var ball_num = randi_range(0,Config.tex_array.size()-1)
-			var b = preload("res://ball.tscn").instantiate().set_ballname("Ball%d(%d,%d)" %[ball_num+9,x,y]
+			var b = preload("res://ball.tscn").instantiate().set_ballinfo(ball_num+9, "%d,%d" %[x,y]
 				).set_material(Config.tex_array[ball_num])
 			b.position = Vector3(x,y,0.5)
 			$BallContainer.add_child(b)

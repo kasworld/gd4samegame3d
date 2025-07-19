@@ -4,13 +4,15 @@ class_name Ball
 signal ball_mouse_entered(me :Ball)
 signal ball_mouse_exited(me :Ball)
 
-var ball_name :String
+var pos_str :String
+var type_num :int
 
 func _to_string() -> String:
-	return ball_name
+	return "Ball%d-%s" % [type_num, pos_str]
 
-func set_ballname(name :String) -> Ball:
-	ball_name = name
+func set_ballinfo(typenum :int, posstring :String) -> Ball:
+	type_num = typenum
+	pos_str = posstring
 	return self
 	
 func set_material(mat :Material) -> Ball:
