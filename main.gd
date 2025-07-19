@@ -35,11 +35,32 @@ func add_balls() -> void:
 			ball_grid[-1].append(b)
 	#print(ball_grid)
 
+var selected_ball_list :Array[Ball]
 func ball_mouse_entered(b :Ball) -> void:
-	pass
+	var visited_pos :Dictionary # vector2i 
+	var to_visit_pos :Array # vector2i
+	var start_pos = b.pos2d
+	to_visit_pos.append(start_pos)
+	while to_visit_pos.size() > 0:
+		var current_pos = to_visit_pos.pop_front()
+		visited_pos[current_pos] = true
+		var current_ball = ball_grid[current_pos.x][current_pos.y]
+		if current_ball.type_num == b.type_num:
+			selected_ball_list.append(current_ball)
+			for dir in EnumDir.DirList:
+				var to_pos = current_pos + EnumDir.Dir2Vt[dir]
+				if to_pos.x < 0 or to_pos.x >= Config.WorldSize.x or to_pos.y < 0 or to_pos.y >= Config.WorldSize.y:
+					continue
+				if visited_pos.has(to_pos) :
+					continue
+				to_visit_pos.append(to_pos)
+
+	for n in selected_ball_list:
+		n.start_animation()
 
 func ball_mouse_exited(b :Ball) -> void:
-	pass
+	for n in selected_ball_list:
+		n.stop_animation()
 
 var camera_move = false
 func _process(_delta: float) -> void:
