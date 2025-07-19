@@ -92,11 +92,19 @@ func ball_down() -> void:
 	var ylen = ball_grid[0].size()
 	for x in xlen:
 		for y in ylen-1:
-			if ball_grid[x][y] == null:
-				ball_grid[x][y] = ball_grid[x][y+1]
+			if ball_grid[x][y] == null and ball_grid[x][y+1] != null:
+				# find not null
+				var yfound = 0
+				for ynot in range(y,-1,-1):
+					if ball_grid[x][ynot] != null:
+						yfound = ynot +1
+						break
+				ball_grid[x][yfound] = ball_grid[x][y+1]
 				ball_grid[x][y+1] = null
-				if ball_grid[x][y] != null:
-					ball_grid[x][y].position = Vector3(x, y, 0.5)
+				fix_grigball_pos(x,yfound)
+
+func fix_grigball_pos(x :int, y:int) -> void:
+	ball_grid[x][y].position = Vector3(x, y, 0.5)
 
 func array_to_multiline_text(a :Array) -> String:
 	var rtn = ""
