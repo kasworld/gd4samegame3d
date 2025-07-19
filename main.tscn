@@ -37,6 +37,12 @@ offset_right = 40.0
 offset_bottom = 40.0
 theme = SubResource("Theme_h2yge")
 
+[node name="현재위치" type="Label" parent="왼쪽패널"]
+layout_mode = 2
+
+[node name="선택목록" type="Label" parent="왼쪽패널"]
+layout_mode = 2
+
 [node name="WallBox" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_ig7tw")
 

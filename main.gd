@@ -35,20 +35,29 @@ func add_balls() -> void:
 			ball_grid[-1].append(b)
 	#print(ball_grid)
 
+var dir_list = [Vector2i(0,-1), Vector2i(-1,0), Vector2i(0, 1), Vector2i(1,0) ]
 var selected_ball_list :Array[Ball]
 func ball_mouse_entered(b :Ball) -> void:
+	$"왼쪽패널/현재위치".text = "%s" % b
+	if not selected_ball_list.is_empty():
+		for n in selected_ball_list:
+			n.stop_animation()
+		print(selected_ball_list)
+		selected_ball_list = []
+		
 	var visited_pos :Dictionary # vector2i 
 	var to_visit_pos :Array # vector2i
-	var start_pos = b.pos2d
-	to_visit_pos.append(start_pos)
-	while to_visit_pos.size() > 0:
+	
+	to_visit_pos.append(b.pos2d)
+	selected_ball_list.append(b)
+	while not to_visit_pos.is_empty():
 		var current_pos = to_visit_pos.pop_front()
 		visited_pos[current_pos] = true
 		var current_ball = ball_grid[current_pos.x][current_pos.y]
 		if current_ball.type_num == b.type_num:
 			selected_ball_list.append(current_ball)
-			for dir in EnumDir.DirList:
-				var to_pos = current_pos + EnumDir.Dir2Vt[dir]
+			for dir in dir_list:
+				var to_pos = current_pos + dir
 				if to_pos.x < 0 or to_pos.x >= Config.WorldSize.x or to_pos.y < 0 or to_pos.y >= Config.WorldSize.y:
 					continue
 				if visited_pos.has(to_pos) :
@@ -57,10 +66,18 @@ func ball_mouse_entered(b :Ball) -> void:
 
 	for n in selected_ball_list:
 		n.start_animation()
+	$"왼쪽패널/선택목록".text = array_to_multiline_text(selected_ball_list)
 
 func ball_mouse_exited(b :Ball) -> void:
-	for n in selected_ball_list:
-		n.stop_animation()
+	pass
+	#for n in selected_ball_list:
+		#n.stop_animation()
+
+func array_to_multiline_text(a :Array) -> String:
+	var rtn = ""
+	for n in a:
+		rtn += "%s\n" %[n]
+	return rtn
 
 var camera_move = false
 func _process(_delta: float) -> void:
