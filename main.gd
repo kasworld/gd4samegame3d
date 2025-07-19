@@ -16,7 +16,6 @@ func add_balls() -> void:
 			var b = preload("res://ball.tscn").instantiate(
 				).set_material(Config.tex_array.pick_random())
 			b.position = Vector3(x,y,0.5)
-			b.rotation.y = PI
 			$BallContainer.add_child(b)
 
 var camera_move = false

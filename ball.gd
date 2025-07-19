@@ -1,6 +1,10 @@
 extends StaticBody3D
 class_name Ball
 
+signal ball_mouse_entered(me :Ball)
+signal ball_mouse_exited(me :Ball)
+
+
 func set_material(mat :Material) -> Ball:
 	$MeshInstance3D.mesh.material = mat
 	return self
@@ -18,3 +22,14 @@ func set_radius(r :float) -> Ball:
 	$CollisionShape3D.shape.radius = r
 	return self
 	
+func _on_mouse_entered() -> void:
+	$AnimationPlayer.play("new_animation")
+	ball_mouse_entered.emit(self)
+
+func _on_mouse_exited() -> void:
+	$AnimationPlayer.play("RESET")
+	ball_mouse_exited.emit(self)
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "new_animation":
+		$AnimationPlayer.play("new_animation")

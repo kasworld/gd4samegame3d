@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cx48obkca1x64"]
+[gd_scene load_steps=9 format=3 uid="uid://cx48obkca1x64"]
 
 [ext_resource type="Script" uid="uid://dofyafqd7rbee" path="res://ball.gd" id="1_x8fbi"]
 
@@ -17,6 +17,33 @@ clearcoat_enabled = true
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_x8fbi")
 
+[sub_resource type="Animation" id="Animation_x8fbi"]
+resource_name = "new_animation"
+length = 2.0
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 2, 1, 0, 0, 0, -1)
+
+[sub_resource type="Animation" id="Animation_41u45"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ktgx5"]
+_data = {
+&"RESET": SubResource("Animation_41u45"),
+&"new_animation": SubResource("Animation_x8fbi")
+}
+
 [node name="Ball" type="StaticBody3D"]
 physics_material_override = SubResource("PhysicsMaterial_x8fbi")
 script = ExtResource("1_x8fbi")
@@ -25,4 +52,14 @@ script = ExtResource("1_x8fbi")
 shape = SubResource("SphereShape3D_x8fbi")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 mesh = SubResource("SphereMesh_ktgx5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ktgx5")
+}
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
