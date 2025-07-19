@@ -17,6 +17,16 @@ clearcoat_enabled = true
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_x8fbi")
 
+[sub_resource type="Animation" id="Animation_41u45"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
 [sub_resource type="Animation" id="Animation_x8fbi"]
 resource_name = "new_animation"
 length = 2.0
@@ -27,16 +37,6 @@ tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 2, 1, 0, 0, 0, -1)
-
-[sub_resource type="Animation" id="Animation_41u45"]
-length = 0.001
-tracks/0/type = "rotation_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ktgx5"]
 _data = {

@@ -4,15 +4,15 @@ class_name Ball
 signal ball_mouse_entered(me :Ball)
 signal ball_mouse_exited(me :Ball)
 
-var pos_str :String
+var pos2d :Vector2i
 var type_num :int
 
 func _to_string() -> String:
-	return "Ball%d-%s" % [type_num, pos_str]
+	return "Ball%d-%s" % [type_num, pos2d]
 
-func set_ballinfo(typenum :int, posstring :String) -> Ball:
+func set_ballinfo(typenum :int, pos :Vector2i) -> Ball:
 	type_num = typenum
-	pos_str = posstring
+	pos2d = pos
 	return self
 	
 func set_material(mat :Material) -> Ball:
@@ -33,13 +33,18 @@ func set_radius(r :float) -> Ball:
 	return self
 	
 func _on_mouse_entered() -> void:
-	$AnimationPlayer.play("new_animation")
+	start_animation()
 	ball_mouse_entered.emit(self)
 
 func _on_mouse_exited() -> void:
-	$AnimationPlayer.play("RESET")
+	stop_animation()
 	ball_mouse_exited.emit(self)
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "new_animation":
-		$AnimationPlayer.play("new_animation")
+		start_animation()
+
+func stop_animation() -> void:
+	$AnimationPlayer.play("RESET")
+func start_animation() -> void:
+	$AnimationPlayer.play("new_animation")
