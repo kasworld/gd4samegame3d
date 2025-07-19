@@ -21,9 +21,9 @@ func set_walls() -> void:
 
 func add_balls() -> void:
 	ball_grid = []
-	for y in Config.WorldSize.y:
+	for x in Config.WorldSize.x:
 		ball_grid.append([])
-		for x in Config.WorldSize.x:
+		for y in Config.WorldSize.y:
 			var ball_num = randi_range(0,tex_list.size()-1)
 			var b = preload("res://ball.tscn").instantiate().set_ballinfo(ball_num, Vector2i(x,y)
 				).set_material(tex_list[ball_num]
