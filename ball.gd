@@ -1,18 +1,20 @@
-extends MeshInstance3D
+extends StaticBody3D
 class_name Ball
 
 func set_material(mat :Material) -> Ball:
-	mesh.material = mat
+	$MeshInstance3D.mesh.material = mat
 	return self
 
 func set_color(co :Color) -> Ball:
-	mesh.material.albedo_color = co
+	$MeshInstance3D.mesh.material.albedo_color = co
 	return self
 
 func get_color() -> Color:
-	return mesh.material.albedo_color
+	return $MeshInstance3D.mesh.material.albedo_color
 
 func set_radius(r :float) -> Ball:
-	mesh.radius = r
-	mesh.height = r*2
+	$MeshInstance3D.mesh.radius = r
+	$MeshInstance3D.mesh.height = r*2
+	$CollisionShape3D.shape.radius = r
 	return self
+	

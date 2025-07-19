@@ -1,10 +1,28 @@
-[gd_scene load_steps=3 format=3 uid="uid://hx8ditl7qttq"]
+[gd_scene load_steps=6 format=3 uid="uid://cx48obkca1x64"]
 
-[ext_resource type="Script" uid="uid://cbpuc0wh7ufxt" path="res://ball.gd" id="1_x8fbi"]
+[ext_resource type="Script" uid="uid://dofyafqd7rbee" path="res://ball.gd" id="1_x8fbi"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_x8fbi"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_x8fbi"]
 resource_local_to_scene = true
 
-[node name="Ball" type="MeshInstance3D"]
-mesh = SubResource("SphereMesh_x8fbi")
+[sub_resource type="SphereShape3D" id="SphereShape3D_x8fbi"]
+resource_local_to_scene = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x8fbi"]
+resource_local_to_scene = true
+emission = Color(1, 1, 1, 1)
+clearcoat_enabled = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_ktgx5"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_x8fbi")
+
+[node name="Ball" type="StaticBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_x8fbi")
 script = ExtResource("1_x8fbi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_x8fbi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ktgx5")
