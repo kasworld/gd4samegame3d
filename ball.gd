@@ -4,7 +4,15 @@ class_name Ball
 signal ball_mouse_entered(me :Ball)
 signal ball_mouse_exited(me :Ball)
 
+var ball_name :String
 
+func _to_string() -> String:
+	return ball_name
+
+func init(name :String) -> Ball:
+	ball_name = name
+	return self
+	
 func set_material(mat :Material) -> Ball:
 	$MeshInstance3D.mesh.material = mat
 	return self

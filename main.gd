@@ -1,5 +1,7 @@
 extends Node3D
 
+var ball_grid :Array # [x][y]
+
 func _ready() -> void:
 	set_walls()
 	reset_camera_pos()
@@ -11,13 +13,16 @@ func set_walls() -> void:
 	$OmniLight3D.position = Config.WorldSize/2
 
 func add_balls() -> void:
-	for x in Config.WorldSize.x:
-		for y in Config.WorldSize.y:
-			var b = preload("res://ball.tscn").instantiate(
+	ball_grid = []
+	for y in Config.WorldSize.y:
+		ball_grid.append([])
+		for x in Config.WorldSize.x:
+			var b = preload("res://ball.tscn").instantiate().init("Ball(%d,%d)" %[x,y]
 				).set_material(Config.tex_array.pick_random())
 			b.position = Vector3(x,y,0.5)
 			$BallContainer.add_child(b)
-
+			ball_grid[-1].append(b)
+			
 var camera_move = false
 func _process(delta: float) -> void:
 	var t = Time.get_unix_time_from_system() /-3.0
