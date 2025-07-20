@@ -33,12 +33,12 @@ func set_height_depth(h :float, d :float) -> Char:
 	$CollisionShape3D.shape.size.y = d
 	$CollisionShape3D.shape.size.z = h
 	$MeshInstance3D.mesh.pixel_size = h/10
-	$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.z * 0.9 * $MeshInstance3D.mesh.text.length() 
+	$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.y * 0.9 * $MeshInstance3D.mesh.text.length() 
 	return self
 
 func set_char(s :String) -> Char:
 	$MeshInstance3D.mesh.text = s
-	$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.z * 0.9 * $MeshInstance3D.mesh.text.length() 
+	$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.y * 0.9 * $MeshInstance3D.mesh.text.length() 
 	return self
 
 func _on_mouse_entered() -> void:
