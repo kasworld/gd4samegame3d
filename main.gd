@@ -97,26 +97,28 @@ func ball_down() -> void:
 		for y in ylen-1:
 			if ball_grid[x][y] == null:
 				# find not null
-				var yfound = 0
-				for ynot in range(y,-1,-1):
+				var yfound = ylen
+				for ynot in range(y,ylen):
 					if ball_grid[x][ynot] != null:
-						yfound = ynot +1
+						yfound = ynot
 						break
-				ball_grid[x][yfound] = ball_grid[x][y+1]
-				ball_grid[x][y+1] = null
+				if yfound < ylen:
+					ball_grid[x][y] = ball_grid[x][yfound]
+					ball_grid[x][yfound] = null
 
 func ball_left() -> void:
 	var xlen = ball_grid.size()
 	var ylen = ball_grid[0].size()
 	for x in xlen-1:
 		if is_ballgrid_y_empty(x):
-			var xfound = 0
-			for xnot in range(x,-1,-1):
+			var xfound = xlen
+			for xnot in range(x,xlen):
 				if not is_ballgrid_y_empty(xnot):
-					xfound = xnot +1
+					xfound = xnot
 					break
-			ball_grid[xfound] = ball_grid[x+1]
-			ball_grid[x+1] = new_empty_ballgrid_y(ylen)
+			if xfound < xlen:
+				ball_grid[x] = ball_grid[xfound]
+				ball_grid[xfound] = new_empty_ballgrid_y(ylen)
 
 func is_ballgrid_y_empty(x :int) -> bool:
 	var y_empty := true
