@@ -1,39 +1,46 @@
 extends StaticBody3D
-class_name Ball
+class_name Char
 
-signal co3d_mouse_entered(me :Ball)
-signal co3d_mouse_exited(me :Ball)
-signal co3d_mouse_pressed(me :Ball)
+signal co3d_mouse_entered(me :Char)
+signal co3d_mouse_exited(me :Char)
+signal co3d_mouse_pressed(me :Char)
 
 var type_num :int
 
 func _to_string() -> String:
-	return "Ball%d-%s" % [type_num, get_pos2d()]
+	return "Char%d-%s" % [type_num, get_pos2d()]
 
 func get_pos2d() -> Vector2i:
 	return Vector2i(position.x, position.y)
 
-func set_type_num(typenum :int) -> Ball:
+func set_type_num(typenum :int) -> Char:
 	type_num = typenum
 	return self
-	
-func set_material(mat :Material) -> Ball:
+
+func set_material(mat :Material) -> Char:
 	$MeshInstance3D.mesh.material = mat
 	return self
 
-func set_color(co :Color) -> Ball:
+func set_color(co :Color) -> Char:
 	$MeshInstance3D.mesh.material.albedo_color = co
 	return self
 
 func get_color() -> Color:
 	return $MeshInstance3D.mesh.material.albedo_color
 
-func set_radius(r :float) -> Ball:
-	$MeshInstance3D.mesh.radius = r
-	$MeshInstance3D.mesh.height = r*2
-	$CollisionShape3D.shape.radius = r
+func set_height_depth(h :float, d :float) -> Char:
+	$MeshInstance3D.mesh.depth = d
+	$CollisionShape3D.shape.size.y = d
+	$CollisionShape3D.shape.size.z = h
+	$MeshInstance3D.mesh.pixel_size = h/10
+	$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.z * 0.9 * $MeshInstance3D.mesh.text.length() 
 	return self
-	
+
+func set_char(s :String) -> Char:
+	$MeshInstance3D.mesh.text = s
+	$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.z * 0.9 * $MeshInstance3D.mesh.text.length() 
+	return self
+
 func _on_mouse_entered() -> void:
 	start_animation()
 	co3d_mouse_entered.emit(self)

@@ -1,6 +1,6 @@
 extends Node3D
 
-var ball_grid :Array # [x][y]
+var co3d_grid :Array # [x][y]
 
 const MaxBallType = 3
 var tex_list :Array
@@ -10,7 +10,7 @@ func _ready() -> void:
 	reset_camera_pos()
 	tex_list = Config.tex_array.duplicate()
 	tex_list.shuffle()
-	tex_list = tex_list.slice(0,2)
+	tex_list = tex_list.slice(0,3)
 	add_balls()
 
 func set_walls() -> void:
@@ -20,37 +20,37 @@ func set_walls() -> void:
 	$OmniLight3D.omni_range = Config.WorldSize.length()
 
 func add_balls() -> void:
-	ball_grid = []
+	co3d_grid = []
 	for x in Config.WorldSize.x:
-		ball_grid.append([])
+		co3d_grid.append([])
 		for y in Config.WorldSize.y:
-			var ball_num = randi_range(0,tex_list.size()-1)
-			var b = preload("res://ball.tscn").instantiate().set_type_num(ball_num
-				).set_material(tex_list[ball_num]
+			var co3d_num = randi_range(0,tex_list.size()-1)
+			var b = preload("res://ball.tscn").instantiate().set_type_num(co3d_num
+				).set_material(tex_list[co3d_num]
 				).set_radius(0.5)
 			b.position = Vector3(x,y,0.5)
-			b.ball_mouse_entered.connect(ball_mouse_entered)
-			b.ball_mouse_exited.connect(ball_mouse_exited)
-			b.ball_mouse_pressed.connect(ball_mouse_pressed)
-			$BallContainer.add_child(b)
-			ball_grid[-1].append(b)
-	#print(ball_grid)
+			b.co3d_mouse_entered.connect(co3d_mouse_entered)
+			b.co3d_mouse_exited.connect(co3d_mouse_exited)
+			b.co3d_mouse_pressed.connect(co3d_mouse_pressed)
+			$CO3DContainer.add_child(b)
+			co3d_grid[-1].append(b)
+	#print(co3d_grid)
 
 var dir_list = [Vector2i(0,-1), Vector2i(-1,0), Vector2i(0, 1), Vector2i(1,0) ]
-var selected_ball_list :Array[Ball]
-func ball_mouse_entered(b :Ball) -> void:
+var selected_co3d_list :Array[CollisionObject3D]
+func co3d_mouse_entered(b :CollisionObject3D) -> void:
 	$"왼쪽패널/현재위치".text = "%s" % b
-	#print(selected_ball_list)
-	for n in selected_ball_list:
+	#print(selected_co3d_list)
+	for n in selected_co3d_list:
 		if n != null:
 			n.stop_animation()
-	selected_ball_list = find_sameballs(b)
-	for n in selected_ball_list:
+	selected_co3d_list = find_sameballs(b)
+	for n in selected_co3d_list:
 		n.start_animation()
-	$"왼쪽패널/선택목록".text = array_to_multiline_text(selected_ball_list)
+	#$"왼쪽패널/선택목록".text = array_to_multiline_text(selected_co3d_list)
 
-func find_sameballs(b :Ball) -> Array[Ball]:
-	var found_balls :Array[Ball] = []
+func find_sameballs(b :CollisionObject3D) -> Array[CollisionObject3D]:
+	var found_balls :Array[CollisionObject3D] = []
 	var visited_pos :Dictionary # vector2i 
 	var to_visit_pos :Array # vector2i
 	to_visit_pos.append(b.get_pos2d())
@@ -59,7 +59,7 @@ func find_sameballs(b :Ball) -> Array[Ball]:
 		if visited_pos.has(current_pos):
 			continue
 		visited_pos[current_pos] = true
-		var current_ball = ball_grid[current_pos.x][current_pos.y]
+		var current_ball = co3d_grid[current_pos.x][current_pos.y]
 		if current_ball == null:
 			continue
 		if current_ball.type_num == b.type_num:
@@ -68,47 +68,47 @@ func find_sameballs(b :Ball) -> Array[Ball]:
 				var to_pos = current_pos + dir
 				if to_pos.x < 0 or to_pos.x >= Config.WorldSize.x or to_pos.y < 0 or to_pos.y >= Config.WorldSize.y:
 					continue
-				if ball_grid[current_pos.x][current_pos.y] == null:
+				if co3d_grid[current_pos.x][current_pos.y] == null:
 					continue
 				if visited_pos.has(to_pos) :
 					continue
 				to_visit_pos.append(to_pos)
 	return found_balls
 
-func ball_mouse_exited(b :Ball) -> void:
-	for n in selected_ball_list:
+func co3d_mouse_exited(b :CollisionObject3D) -> void:
+	for n in selected_co3d_list:
 		if n != null:
 			n.stop_animation()
 
-func ball_mouse_pressed(b :Ball) -> void:
-	var ball_list = find_sameballs(b)
-	for n in ball_list:
+func co3d_mouse_pressed(b :CollisionObject3D) -> void:
+	var co3d_list = find_sameballs(b)
+	for n in co3d_list:
 		var p2d = n.get_pos2d()
-		ball_grid[p2d.x][p2d.y] = null
+		co3d_grid[p2d.x][p2d.y] = null
 		n.queue_free()
-	ball_down()
-	ball_left()
-	fix_gridball_pos_all()
+	co3d_down()
+	co3d_left()
+	fix_gridco3d_pos_all()
 
-func ball_down() -> void:
-	var xlen = ball_grid.size()
-	var ylen = ball_grid[0].size()
+func co3d_down() -> void:
+	var xlen = co3d_grid.size()
+	var ylen = co3d_grid[0].size()
 	for x in xlen:
 		for y in ylen-1:
-			if ball_grid[x][y] == null:
+			if co3d_grid[x][y] == null:
 				# find not null
 				var yfound = ylen
 				for ynot in range(y,ylen):
-					if ball_grid[x][ynot] != null:
+					if co3d_grid[x][ynot] != null:
 						yfound = ynot
 						break
 				if yfound < ylen:
-					ball_grid[x][y] = ball_grid[x][yfound]
-					ball_grid[x][yfound] = null
+					co3d_grid[x][y] = co3d_grid[x][yfound]
+					co3d_grid[x][yfound] = null
 
-func ball_left() -> void:
-	var xlen = ball_grid.size()
-	var ylen = ball_grid[0].size()
+func co3d_left() -> void:
+	var xlen = co3d_grid.size()
+	var ylen = co3d_grid[0].size()
 	for x in xlen-1:
 		if is_ballgrid_y_empty(x):
 			var xfound = xlen
@@ -117,12 +117,12 @@ func ball_left() -> void:
 					xfound = xnot
 					break
 			if xfound < xlen:
-				ball_grid[x] = ball_grid[xfound]
-				ball_grid[xfound] = new_empty_ballgrid_y(ylen)
+				co3d_grid[x] = co3d_grid[xfound]
+				co3d_grid[xfound] = new_empty_ballgrid_y(ylen)
 
 func is_ballgrid_y_empty(x :int) -> bool:
 	var y_empty := true
-	for b in ball_grid[x]:
+	for b in co3d_grid[x]:
 		if b != null:
 			y_empty = false
 			break
@@ -134,13 +134,13 @@ func new_empty_ballgrid_y(n :int) -> Array:
 		rtn.append(null)
 	return rtn
 
-func fix_gridball_pos_all() -> void:
-	var xlen = ball_grid.size()
-	var ylen = ball_grid[0].size()
+func fix_gridco3d_pos_all() -> void:
+	var xlen = co3d_grid.size()
+	var ylen = co3d_grid[0].size()
 	for x in xlen:
 		for y in ylen:
-			if ball_grid[x][y] != null:
-				ball_grid[x][y].position = Vector3(x, y, 0.5)
+			if co3d_grid[x][y] != null:
+				co3d_grid[x][y].position = Vector3(x, y, 0.5)
 
 func array_to_multiline_text(a :Array) -> String:
 	var rtn = ""

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 NamedColorList="*res://global/named_color_list.gd"
 Config="*res://global/config.gd"
+PlayingCard="*res://global/playing_card.gd"
 
 [display]
 

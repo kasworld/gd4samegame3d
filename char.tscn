@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://dj1pdhawsxt6b"]
+
+[ext_resource type="Script" uid="uid://tlc0hcmltb3y" path="res://char.gd" id="1_njpxk"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5k12k"]
+friction = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_njpxk"]
+resource_local_to_scene = true
+size = Vector3(1, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_njpxk"]
+resource_local_to_scene = true
+
+[sub_resource type="TextMesh" id="TextMesh_5k12k"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_njpxk")
+text = "H"
+font_size = 14
+pixel_size = 0.1
+depth = 0.1
+
+[sub_resource type="Animation" id="Animation_41u45"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_x8fbi"]
+resource_name = "new_animation"
+length = 2.0
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 2, 1, 0, 0, 0, -1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ktgx5"]
+_data = {
+&"RESET": SubResource("Animation_41u45"),
+&"new_animation": SubResource("Animation_x8fbi")
+}
+
+[node name="Char" type="StaticBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_5k12k")
+script = ExtResource("1_njpxk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_njpxk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("TextMesh_5k12k")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ktgx5")
+}

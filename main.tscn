@@ -46,4 +46,4 @@ layout_mode = 2
 [node name="WallBox" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_ig7tw")
 
-[node name="BallContainer" type="Node3D" parent="."]
+[node name="CO3DContainer" type="Node3D" parent="."]
