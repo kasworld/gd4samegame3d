@@ -40,7 +40,7 @@ var dir_list = [Vector2i(0,-1), Vector2i(-1,0), Vector2i(0, 1), Vector2i(1,0) ]
 var selected_ball_list :Array[Ball]
 func ball_mouse_entered(b :Ball) -> void:
 	$"왼쪽패널/현재위치".text = "%s" % b
-	print(selected_ball_list)
+	#print(selected_ball_list)
 	for n in selected_ball_list:
 		if n != null:
 			n.stop_animation()
@@ -172,6 +172,6 @@ func _on_카메라변경_pressed() -> void:
 		reset_camera_pos()
 
 func reset_camera_pos()->void:
-	$Camera3D.position = Vector3(Config.WorldSize.x/2, Config.WorldSize.y/2, Config.WorldSize.length()*0.55 )
+	$Camera3D.position = Vector3(Config.WorldSize.x/2, Config.WorldSize.y/2, Config.WorldSize.x/2 )
 	$Camera3D.look_at(Config.WorldSize/2)
 	$Camera3D.far = Config.WorldSize.length()
