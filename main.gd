@@ -40,21 +40,19 @@ var dir_list = [Vector2i(0,-1), Vector2i(-1,0), Vector2i(0, 1), Vector2i(1,0) ]
 var selected_ball_list :Array[Ball]
 func ball_mouse_entered(b :Ball) -> void:
 	$"왼쪽패널/현재위치".text = "%s" % b
-	select_same_ball(b)
+	print(selected_ball_list)
+	for n in selected_ball_list:
+		if n != null:
+			n.stop_animation()
+	selected_ball_list = find_sameballs(b)
 	for n in selected_ball_list:
 		n.start_animation()
 	$"왼쪽패널/선택목록".text = array_to_multiline_text(selected_ball_list)
 
-func select_same_ball(b :Ball) -> void:
-	if not selected_ball_list.is_empty():
-		for n in selected_ball_list:
-			n.stop_animation()
-		print(selected_ball_list)
-		selected_ball_list = []
-		
+func find_sameballs(b :Ball) -> Array[Ball]:
+	var found_balls :Array[Ball] = []
 	var visited_pos :Dictionary # vector2i 
 	var to_visit_pos :Array # vector2i
-	
 	to_visit_pos.append(b.get_pos2d())
 	while not to_visit_pos.is_empty():
 		var current_pos = to_visit_pos.pop_front()
@@ -63,7 +61,7 @@ func select_same_ball(b :Ball) -> void:
 		if current_ball == null:
 			continue
 		if current_ball.type_num == b.type_num:
-			selected_ball_list.append(current_ball)
+			found_balls.append(current_ball)
 			for dir in dir_list:
 				var to_pos = current_pos + dir
 				if to_pos.x < 0 or to_pos.x >= Config.WorldSize.x or to_pos.y < 0 or to_pos.y >= Config.WorldSize.y:
@@ -73,19 +71,22 @@ func select_same_ball(b :Ball) -> void:
 				if visited_pos.has(to_pos) :
 					continue
 				to_visit_pos.append(to_pos)
+	return found_balls
 
 func ball_mouse_exited(b :Ball) -> void:
 	for n in selected_ball_list:
-		n.stop_animation()
+		if n != null:
+			n.stop_animation()
 
 func ball_mouse_pressed(b :Ball) -> void:
-	select_same_ball(b)
-	for n in selected_ball_list:
+	var ball_list = find_sameballs(b)
+	for n in ball_list:
 		var p2d = n.get_pos2d()
 		ball_grid[p2d.x][p2d.y] = null
 		n.queue_free()
-	selected_ball_list = []
 	ball_down()
+	ball_left()
+	fix_gridball_pos_all()
 
 func ball_down() -> void:
 	var xlen = ball_grid.size()
@@ -101,10 +102,36 @@ func ball_down() -> void:
 						break
 				ball_grid[x][yfound] = ball_grid[x][y+1]
 				ball_grid[x][y+1] = null
-				fix_grigball_pos(x,yfound)
 
-func fix_grigball_pos(x :int, y:int) -> void:
-	ball_grid[x][y].position = Vector3(x, y, 0.5)
+func ball_left() -> void:
+	var xlen = ball_grid.size()
+	var ylen = ball_grid[0].size()
+	for x in xlen-1:
+		if is_ballgrid_y_empty(x):
+			ball_grid[x] = ball_grid[x+1]
+			ball_grid[x+1] = new_empty_ballgrid_y(ylen)
+
+func is_ballgrid_y_empty(x :int) -> bool:
+	var y_empty := true
+	for b in ball_grid[x]:
+		if b != null:
+			y_empty = false
+			break
+	return y_empty	
+
+func new_empty_ballgrid_y(n :int) -> Array:
+	var rtn := []
+	for i in n:
+		rtn.append(null)
+	return rtn
+
+func fix_gridball_pos_all() -> void:
+	var xlen = ball_grid.size()
+	var ylen = ball_grid[0].size()
+	for x in xlen:
+		for y in ylen:
+			if ball_grid[x][y] != null:
+				ball_grid[x][y].position = Vector3(x, y, 0.5)
 
 func array_to_multiline_text(a :Array) -> String:
 	var rtn = ""
