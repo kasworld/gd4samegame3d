@@ -10,7 +10,7 @@ func _ready() -> void:
 	reset_camera_pos()
 	tex_list = Config.tex_array.duplicate()
 	tex_list.shuffle()
-	tex_list = tex_list.slice(0,3)
+	tex_list = tex_list.slice(0,2)
 	add_balls()
 
 func set_walls() -> void:
@@ -56,6 +56,8 @@ func find_sameballs(b :Ball) -> Array[Ball]:
 	to_visit_pos.append(b.get_pos2d())
 	while not to_visit_pos.is_empty():
 		var current_pos = to_visit_pos.pop_front()
+		if visited_pos.has(current_pos):
+			continue
 		visited_pos[current_pos] = true
 		var current_ball = ball_grid[current_pos.x][current_pos.y]
 		if current_ball == null:
