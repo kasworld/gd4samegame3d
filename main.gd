@@ -1,5 +1,7 @@
 extends Node3D
 
+const BallRadius := 0.5
+const WorldSize := Vector3(40,22,BallRadius*2)
 const MaxBallType = 4
 var color_list = [
 	Color.RED, 
@@ -21,16 +23,16 @@ func _ready() -> void:
 	add_balls()
 
 func set_walls() -> void:
-	$WallBox.mesh.size = Config.WorldSize
-	$WallBox.position = Config.WorldSize/2 - Vector3(0.5,0.5,0)
-	$OmniLight3D.position = Config.WorldSize/2 + Vector3(0,0,Config.WorldSize.length()/2)
-	$OmniLight3D.omni_range = Config.WorldSize.length()
+	$WallBox.mesh.size = WorldSize
+	$WallBox.position = WorldSize/2 - Vector3(0.5,0.5,0)
+	$OmniLight3D.position = WorldSize/2 + Vector3(0,0,WorldSize.length()/2)
+	$OmniLight3D.omni_range = WorldSize.length()
 
 func add_balls() -> void:
 	co3d_grid = []
-	for x in Config.WorldSize.x:
+	for x in WorldSize.x:
 		co3d_grid.append([])
-		for y in Config.WorldSize.y:
+		for y in WorldSize.y:
 			var co3d_num = randi_range(0,MaxBallType-1)
 			var b = preload("res://char.tscn").instantiate().set_type_num(co3d_num
 				).set_height_depth(0.9,0.2
@@ -71,7 +73,7 @@ func find_sameballs(b :CollisionObject3D) -> Array[CollisionObject3D]:
 			found_balls.append(current_ball)
 			for dir in dir_list:
 				var to_pos = current_pos + dir
-				if to_pos.x < 0 or to_pos.x >= Config.WorldSize.x or to_pos.y < 0 or to_pos.y >= Config.WorldSize.y:
+				if to_pos.x < 0 or to_pos.x >= WorldSize.x or to_pos.y < 0 or to_pos.y >= WorldSize.y:
 					continue
 				if co3d_grid[current_pos.x][current_pos.y] == null:
 					continue
@@ -159,8 +161,8 @@ var camera_move = false
 func _process(_delta: float) -> void:
 	var t = Time.get_unix_time_from_system() /-3.0
 	if camera_move:
-		$Camera3D.position = Vector3(sin(t)*Config.WorldSize.x/2, cos(t)*Config.WorldSize.y/2, Config.WorldSize.length()*0.4 ) + Config.WorldSize/2
-		$Camera3D.look_at(Config.WorldSize/2)
+		$Camera3D.position = Vector3(sin(t)*WorldSize.x/2, cos(t)*WorldSize.y/2, WorldSize.length()*0.4 ) + WorldSize/2
+		$Camera3D.look_at(WorldSize/2)
 
 var key2fn = {
 	KEY_ESCAPE:_on_button_esc_pressed,
@@ -183,6 +185,6 @@ func _on_카메라변경_pressed() -> void:
 		reset_camera_pos()
 
 func reset_camera_pos()->void:
-	$Camera3D.position = Vector3(Config.WorldSize.x/2, Config.WorldSize.y/2, Config.WorldSize.x/2 *1.1)
-	$Camera3D.look_at(Config.WorldSize/2)
-	$Camera3D.far = Config.WorldSize.length()
+	$Camera3D.position = Vector3(WorldSize.x/2, WorldSize.y/2, WorldSize.x/2 *1.1)
+	$Camera3D.look_at(WorldSize/2)
+	$Camera3D.far = WorldSize.length()
