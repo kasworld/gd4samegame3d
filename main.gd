@@ -34,6 +34,13 @@ func handle_move_ani() -> void:
 func _ready() -> void:
 	set_walls()
 	reset_camera_pos()
+	new_game()
+
+func new_game() -> void:
+	점수 = 0
+	update_score_label()
+	for n in $CO3DContainer.get_children():
+		n.queue_free()
 	add_co3d()
 
 func set_walls() -> void:
@@ -73,14 +80,20 @@ func co3d_mouse_exited(_b :CollisionObject3D) -> void:
 		if n != null:
 			n.stop_animation()
 
+func update_score_label() -> void:
+	$"왼쪽패널/점수".text = "점수 %d" % 점수
+
 func co3d_mouse_pressed(b :CollisionObject3D) -> void:
 	var co3d_list = co3d_grid.find_sameballs(b)
 	점수 += pow(co3d_list.size() ,2)
-	$"왼쪽패널/점수".text = "점수 %d" % 점수
+	update_score_label()
 	for n in co3d_list:
 		var p2d = n.get_pos2d()
 		co3d_grid.set_data(p2d.x,p2d.y, null)
 		n.queue_free()
+	if co3d_grid.count_data() == 0:
+		new_game.call_deferred()
+		return
 	co3d_grid.fill_down()
 	co3d_grid.fill_left()
 	fix_gridco3d_pos_all()
@@ -90,15 +103,12 @@ func fix_gridco3d_pos_all() -> void:
 		for y in co3d_grid.grid_size.y:
 			var co3d = co3d_grid.get_data(x,y)
 			if co3d != null:
-				move_ani_data.append(
-					{
-						"starttime" : Time.get_unix_time_from_system(),
-						"co3d" : co3d,
-						"startpos" : co3d.position,
-						"dstpos" : Vector3(x, y, 0.5),
-					}
-				)
-				#co3d_grid.get_data(x,y).position = Vector3(x, y, 0.5)
+				move_ani_data.append({
+					"starttime" : Time.get_unix_time_from_system(),
+					"co3d" : co3d,
+					"startpos" : co3d.position,
+					"dstpos" : Vector3(x, y, 0.5),
+				})
 
 func array_to_multiline_text(a :Array) -> String:
 	var rtn = ""
