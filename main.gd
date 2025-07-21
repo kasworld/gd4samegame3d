@@ -1,8 +1,6 @@
 extends Node3D
 
-var co3d_grid :Array # [x][y]
-
-const MaxBallType = 6
+const MaxBallType = 4
 var color_list = [
 	Color.RED, 
 	Color.GREEN, 
@@ -14,6 +12,8 @@ var color_list = [
 	Color.BLACK,
 ]
 var char_list = ["♥","♣","♠","♦","★","☆"]
+var co3d_grid :Array # [x][y]
+var 점수 :int
 
 func _ready() -> void:
 	set_walls()
@@ -42,20 +42,17 @@ func add_balls() -> void:
 			b.co3d_mouse_pressed.connect(co3d_mouse_pressed)
 			$CO3DContainer.add_child(b)
 			co3d_grid[-1].append(b)
-	#print(co3d_grid)
 
 var dir_list = [Vector2i(0,-1), Vector2i(-1,0), Vector2i(0, 1), Vector2i(1,0) ]
 var selected_co3d_list :Array[CollisionObject3D]
 func co3d_mouse_entered(b :CollisionObject3D) -> void:
 	$"왼쪽패널/현재위치".text = "%s" % b
-	#print(selected_co3d_list)
 	for n in selected_co3d_list:
 		if n != null:
 			n.stop_animation()
 	selected_co3d_list = find_sameballs(b)
 	for n in selected_co3d_list:
 		n.start_animation()
-	#$"왼쪽패널/선택목록".text = array_to_multiline_text(selected_co3d_list)
 
 func find_sameballs(b :CollisionObject3D) -> Array[CollisionObject3D]:
 	var found_balls :Array[CollisionObject3D] = []
@@ -90,6 +87,8 @@ func co3d_mouse_exited(b :CollisionObject3D) -> void:
 
 func co3d_mouse_pressed(b :CollisionObject3D) -> void:
 	var co3d_list = find_sameballs(b)
+	점수 += pow(co3d_list.size() ,2)
+	$"왼쪽패널/점수".text = "점수 %d" % 점수
 	for n in co3d_list:
 		var p2d = n.get_pos2d()
 		co3d_grid[p2d.x][p2d.y] = null
