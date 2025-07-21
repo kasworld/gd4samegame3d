@@ -2,18 +2,22 @@ extends Node3D
 
 var co3d_grid :Array # [x][y]
 
-const MaxBallType = 3
-#var tex_list :Array
-var dark_color_list 
+const MaxBallType = 6
+var color_list = [
+	Color.RED, 
+	Color.GREEN, 
+	Color.BLUE,
+	Color.YELLOW,
+	Color.CYAN,
+	Color.MAGENTA,
+	Color.WHITE,
+	Color.BLACK,
+]
+var char_list = ["♥","♣","♠","♦","★","☆"]
 
 func _ready() -> void:
 	set_walls()
 	reset_camera_pos()
-	dark_color_list = NamedColorList.make_dark_color_list()
-	dark_color_list.shuffle()
-	#tex_list = Config.tex_array.duplicate()
-	#tex_list.shuffle()
-	#tex_list = tex_list.slice(0,3)
 	add_balls()
 
 func set_walls() -> void:
@@ -27,10 +31,11 @@ func add_balls() -> void:
 	for x in Config.WorldSize.x:
 		co3d_grid.append([])
 		for y in Config.WorldSize.y:
-			var co3d_num = randi_range(0,PlayingCard.Symbols.size()-1)
+			var co3d_num = randi_range(0,MaxBallType-1)
 			var b = preload("res://char.tscn").instantiate().set_type_num(co3d_num
-				).set_char(PlayingCard.Symbols[co3d_num]
-				).set_color(dark_color_list[co3d_num][0])
+				).set_height_depth(0.9,0.2
+				).set_char(char_list[co3d_num]
+				).set_color(color_list[co3d_num])
 			b.position = Vector3(x,y,0.5)
 			b.co3d_mouse_entered.connect(co3d_mouse_entered)
 			b.co3d_mouse_exited.connect(co3d_mouse_exited)
@@ -179,6 +184,6 @@ func _on_카메라변경_pressed() -> void:
 		reset_camera_pos()
 
 func reset_camera_pos()->void:
-	$Camera3D.position = Vector3(Config.WorldSize.x/2, Config.WorldSize.y/2, Config.WorldSize.x/2 )
+	$Camera3D.position = Vector3(Config.WorldSize.x/2, Config.WorldSize.y/2, Config.WorldSize.x/2 *1.1)
 	$Camera3D.look_at(Config.WorldSize/2)
 	$Camera3D.far = Config.WorldSize.length()

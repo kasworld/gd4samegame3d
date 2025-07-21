@@ -17,7 +17,7 @@ material = SubResource("StandardMaterial3D_njpxk")
 text = "H"
 font_size = 14
 pixel_size = 0.1
-depth = 0.1
+depth = 0.2
 
 [sub_resource type="Animation" id="Animation_41u45"]
 length = 0.001
