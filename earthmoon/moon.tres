@@ -1,9 +1,0 @@
-[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://die2hc80xkxq1"]
-
-[ext_resource type="Texture2D" uid="uid://dmu4xdw0s4lne" path="res://earthmoon/moon.png" id="1_8b605"]
-[ext_resource type="Texture2D" uid="uid://2x0cka7afmvg" path="res://earthmoon/moon_normals.png" id="2_fxasx"]
-
-[resource]
-albedo_texture = ExtResource("1_8b605")
-normal_enabled = true
-normal_texture = ExtResource("2_fxasx")

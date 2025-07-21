@@ -1,6 +1,0 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bjfcggaa54tdr"]
-
-[ext_resource type="Texture2D" uid="uid://2uvhod2u4l1g" path="res://BallTexture/NewTennisBallColor.jpg" id="1_o208r"]
-
-[resource]
-albedo_texture = ExtResource("1_o208r")
