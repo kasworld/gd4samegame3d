@@ -17,6 +17,20 @@ var char_list = ["♥","♣","♠","♦","★","☆"]
 var co3d_grid :SamegameGrid # [x][y]
 var 점수 :int
 
+var move_ani_data := [] # starttime, co3d , startpos, dstpos
+func handle_move_ani() -> void:
+	# del old data 
+	var new_data := []
+	var anidur := 0.5
+	var nowtime := Time.get_unix_time_from_system()
+	for mad in move_ani_data:
+		if nowtime - mad.starttime < anidur:
+			new_data.append(mad)
+	move_ani_data = new_data
+	for mad in move_ani_data:
+		var rate = (nowtime - mad.starttime) / anidur
+		mad.co3d.position = lerp(mad.startpos, mad.dstpos, rate)
+
 func _ready() -> void:
 	set_walls()
 	reset_camera_pos()
@@ -74,8 +88,17 @@ func co3d_mouse_pressed(b :CollisionObject3D) -> void:
 func fix_gridco3d_pos_all() -> void:
 	for x in co3d_grid.grid_size.x:
 		for y in co3d_grid.grid_size.y:
-			if co3d_grid.get_data(x,y) != null:
-				co3d_grid.get_data(x,y).position = Vector3(x, y, 0.5)
+			var co3d = co3d_grid.get_data(x,y)
+			if co3d != null:
+				move_ani_data.append(
+					{
+						"starttime" : Time.get_unix_time_from_system(),
+						"co3d" : co3d,
+						"startpos" : co3d.position,
+						"dstpos" : Vector3(x, y, 0.5),
+					}
+				)
+				#co3d_grid.get_data(x,y).position = Vector3(x, y, 0.5)
 
 func array_to_multiline_text(a :Array) -> String:
 	var rtn = ""
@@ -85,6 +108,7 @@ func array_to_multiline_text(a :Array) -> String:
 
 var camera_move = false
 func _process(_delta: float) -> void:
+	handle_move_ani()
 	var t = Time.get_unix_time_from_system() /-3.0
 	if camera_move:
 		$Camera3D.position = Vector3(sin(t)*WorldSize.x/2, cos(t)*WorldSize.y/2, WorldSize.length()*0.4 ) + WorldSize/2
