@@ -46,8 +46,8 @@ func new_game() -> void:
 func set_walls() -> void:
 	$WallBox.mesh.size = WorldSize
 	$WallBox.position = WorldSize/2 - Vector3(0.5,0.5,0)
-	$OmniLight3D.position = WorldSize/2 + Vector3(0,0,WorldSize.length()/2)
-	$OmniLight3D.omni_range = WorldSize.length()
+	$OmniLight3D.position = WorldSize/2 + Vector3(0,0,WorldSize.length())
+	$OmniLight3D.omni_range = WorldSize.length()*2
 
 func add_co3d() -> void:
 	co3d_grid = SamegameGrid.new(WorldSize.x, WorldSize.y)
@@ -57,7 +57,7 @@ func add_co3d() -> void:
 			var b = preload("res://char.tscn").instantiate().set_type_num(co3d_num
 				).set_height_depth(0.9,0.2
 				).set_char(char_list[co3d_num]
-				).set_color(color_list[co3d_num])
+				).set_color( Color(color_list[co3d_num],0.9)  )
 			b.position = Vector3(x,y,0.5)
 			b.co3d_mouse_entered.connect(co3d_mouse_entered)
 			b.co3d_mouse_exited.connect(co3d_mouse_exited)

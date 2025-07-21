@@ -10,6 +10,12 @@ resource_local_to_scene = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_njpxk"]
 resource_local_to_scene = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.5
+emission_operator = 1
+clearcoat = 0.2
+subsurf_scatter_strength = 0.5
+backlight = Color(1, 1, 1, 1)
 
 [sub_resource type="TextMesh" id="TextMesh_5k12k"]
 resource_local_to_scene = true
