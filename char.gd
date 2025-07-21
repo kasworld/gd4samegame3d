@@ -58,6 +58,6 @@ func stop_animation() -> void:
 func start_animation() -> void:
 	$AnimationPlayer.play("new_animation")
 
-func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		co3d_mouse_pressed.emit(self)

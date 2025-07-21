@@ -19,6 +19,14 @@ func set_data(x :int, y :int, v :CollisionObject3D):
 	#assert(grid_data[x][y] == null)
 	grid_data[x][y] = v
 
+func count_data() -> int:
+	var rtn :int = 0
+	for x in grid_size.x:
+		for y in grid_size.y:
+			if grid_data[x][y] != null:
+				rtn +=1
+	return rtn
+	
 func find_sameballs(b :CollisionObject3D) -> Array[CollisionObject3D]:
 	var found_balls :Array[CollisionObject3D] = []
 	var visited_pos :Dictionary # vector2i 

@@ -15,12 +15,6 @@ run/main_scene="uid://b3e38t04xxxxk"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
-[autoload]
-
-NamedColorList="*res://global/named_color_list.gd"
-Config="*res://global/config.gd"
-PlayingCard="*res://global/playing_card.gd"
-
 [display]
 
 window/size/viewport_width=3840

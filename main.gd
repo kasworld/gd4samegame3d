@@ -20,7 +20,7 @@ var 점수 :int
 func _ready() -> void:
 	set_walls()
 	reset_camera_pos()
-	add_balls()
+	add_co3d()
 
 func set_walls() -> void:
 	$WallBox.mesh.size = WorldSize
@@ -28,7 +28,7 @@ func set_walls() -> void:
 	$OmniLight3D.position = WorldSize/2 + Vector3(0,0,WorldSize.length()/2)
 	$OmniLight3D.omni_range = WorldSize.length()
 
-func add_balls() -> void:
+func add_co3d() -> void:
 	co3d_grid = SamegameGrid.new(WorldSize.x, WorldSize.y)
 	for x in WorldSize.x:
 		for y in WorldSize.y:
@@ -54,7 +54,7 @@ func co3d_mouse_entered(b :CollisionObject3D) -> void:
 	for n in selected_co3d_list:
 		n.start_animation()
 
-func co3d_mouse_exited(b :CollisionObject3D) -> void:
+func co3d_mouse_exited(_b :CollisionObject3D) -> void:
 	for n in selected_co3d_list:
 		if n != null:
 			n.stop_animation()
