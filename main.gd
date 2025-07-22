@@ -1,8 +1,8 @@
 extends Node3D
 
 const BallRadius := 0.5
-const WorldSize := Vector3(40,22,BallRadius*2)
-const MaxBallType = 4
+const WorldSize := Vector3(160,90,BallRadius*2)
+const MaxBallType = 2
 var color_list = [
 	Color.RED, 
 	Color.GREEN, 
@@ -26,6 +26,8 @@ func handle_move_ani() -> void:
 	for mad in move_ani_data:
 		if nowtime - mad.starttime < anidur:
 			new_data.append(mad)
+		else :
+			mad.co3d.position = mad.dstpos
 	move_ani_data = new_data
 	for mad in move_ani_data:
 		var rate = (nowtime - mad.starttime) / anidur
