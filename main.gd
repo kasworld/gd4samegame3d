@@ -1,7 +1,7 @@
 extends Node3D
 
 const BallRadius := 0.5
-const WorldSize := Vector3(160,90,BallRadius*2)
+const WorldSize := Vector3(40,22,BallRadius*2)
 const MaxBallType = 2
 var color_list = [
 	Color.RED, 
@@ -69,7 +69,6 @@ func add_co3d() -> void:
 
 var selected_co3d_list :Array[CollisionObject3D]
 func co3d_mouse_entered(b :CollisionObject3D) -> void:
-	$"왼쪽패널/현재위치".text = "%s" % b
 	for n in selected_co3d_list:
 		if n != null:
 			n.stop_animation()
@@ -83,7 +82,7 @@ func co3d_mouse_exited(_b :CollisionObject3D) -> void:
 			n.stop_animation()
 
 func update_score_label() -> void:
-	$"왼쪽패널/점수".text = "점수 %d" % 점수
+	$"왼쪽패널/점수".text = "현재점수 %d" % 점수
 
 func co3d_mouse_pressed(b :CollisionObject3D) -> void:
 	var co3d_list = co3d_grid.find_sameballs(b)
@@ -94,6 +93,7 @@ func co3d_mouse_pressed(b :CollisionObject3D) -> void:
 		co3d_grid.set_data(p2d.x,p2d.y, null)
 		n.queue_free()
 	if co3d_grid.count_data() == 0:
+		$"왼쪽패널/점수기록".text += "\n%d" % 점수
 		new_game.call_deferred()
 		return
 	co3d_grid.fill_down()

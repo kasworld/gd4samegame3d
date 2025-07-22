@@ -43,13 +43,13 @@ offset_right = 40.0
 offset_bottom = 40.0
 theme = SubResource("Theme_h2yge")
 
-[node name="현재위치" type="Label" parent="왼쪽패널"]
-visible = false
-layout_mode = 2
-
 [node name="점수" type="Label" parent="왼쪽패널"]
 layout_mode = 2
 text = "점수 0"
+
+[node name="점수기록" type="Label" parent="왼쪽패널"]
+layout_mode = 2
+text = "점수기록"
 
 [node name="WallBox" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_ig7tw")
