@@ -2,10 +2,10 @@ extends Node3D
 
 const BallRadius := 0.5
 const WorldSize := Vector3(40,22,BallRadius*2)
-const MaxBallType = 2
+const MaxBallType = 4
 var color_list = [
-	Color.RED, 
-	Color.GREEN, 
+	Color.RED,
+	Color.GREEN,
 	Color.BLUE,
 	Color.YELLOW,
 	Color.CYAN,
@@ -19,7 +19,7 @@ var 점수 :int
 
 var move_ani_data := [] # starttime, co3d , startpos, dstpos
 func handle_move_ani() -> void:
-	# del old data 
+	# del old data
 	var new_data := []
 	var anidur := 0.5
 	var nowtime := Time.get_unix_time_from_system()
@@ -52,9 +52,9 @@ func set_walls() -> void:
 	$OmniLight3D.omni_range = WorldSize.length()*2
 
 func add_co3d() -> void:
-	co3d_grid = SamegameGrid.new(WorldSize.x, WorldSize.y)
-	for x in WorldSize.x:
-		for y in WorldSize.y:
+	co3d_grid = SamegameGrid.new( snappedi(WorldSize.x,1) , snappedi(WorldSize.y,1) )
+	for x :int in WorldSize.x:
+		for y :int in WorldSize.y:
 			var co3d_num = randi_range(0,MaxBallType-1)
 			var b = preload("res://char.tscn").instantiate().set_type_num(co3d_num
 				).set_height_depth(0.9,0.2
@@ -65,7 +65,7 @@ func add_co3d() -> void:
 			b.co3d_mouse_exited.connect(co3d_mouse_exited)
 			b.co3d_mouse_pressed.connect(co3d_mouse_pressed)
 			$CO3DContainer.add_child(b)
-			co3d_grid.set_data(x,y,b)
+			co3d_grid.set_data(x, y, b)
 
 var selected_co3d_list :Array[CollisionObject3D]
 func co3d_mouse_entered(b :CollisionObject3D) -> void:
@@ -86,7 +86,7 @@ func update_score_label() -> void:
 
 func co3d_mouse_pressed(b :CollisionObject3D) -> void:
 	var co3d_list = co3d_grid.find_sameballs(b)
-	점수 += pow(co3d_list.size() ,2)
+	점수 += pow(co3d_list.size(), 2) as int
 	update_score_label()
 	for n in co3d_list:
 		var p2d = n.get_pos2d()

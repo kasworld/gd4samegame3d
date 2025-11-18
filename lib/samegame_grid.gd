@@ -26,10 +26,10 @@ func count_data() -> int:
 			if grid_data[x][y] != null:
 				rtn +=1
 	return rtn
-	
+
 func find_sameballs(b :CollisionObject3D) -> Array[CollisionObject3D]:
 	var found_balls :Array[CollisionObject3D] = []
-	var visited_pos :Dictionary # vector2i 
+	var visited_pos :Dictionary # vector2i
 	var to_visit_pos :Array # vector2i
 	to_visit_pos.append(b.get_pos2d())
 	while not to_visit_pos.is_empty():
@@ -85,7 +85,7 @@ func is_grid_y_empty(x :int) -> bool:
 		if b != null:
 			y_empty = false
 			break
-	return y_empty	
+	return y_empty
 
 func new_empty_grid_y() -> Array:
 	var rtn := []
