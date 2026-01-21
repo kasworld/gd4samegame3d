@@ -1,116 +1,21 @@
 extends Node3D
 
-const BallRadius := 0.5
-const WorldSize := Vector3(40,22,BallRadius*2)
-const MaxBallType = 4
-var color_list = [
-	Color.RED,
-	Color.GREEN,
-	Color.BLUE,
-	Color.YELLOW,
-	Color.CYAN,
-	Color.MAGENTA,
-	Color.WHITE,
-	Color.BLACK,
-]
-var char_list = ["♥","♣","♠","♦","★","☆"]
-var co3d_grid :SamegameGrid # [x][y]
-var 점수 :int
-
-var move_ani_data := [] # starttime, co3d , startpos, dstpos
-func handle_move_ani() -> void:
-	# del old data
-	var new_data := []
-	var anidur := 0.5
-	var nowtime := Time.get_unix_time_from_system()
-	for mad in move_ani_data:
-		if nowtime - mad.starttime < anidur:
-			new_data.append(mad)
-		else :
-			mad.co3d.position = mad.dstpos
-	move_ani_data = new_data
-	for mad in move_ani_data:
-		var rate = (nowtime - mad.starttime) / anidur
-		mad.co3d.position = lerp(mad.startpos, mad.dstpos, rate)
+var cabinet_size := Vector3(40,22,1)
 
 func _ready() -> void:
-	set_walls()
 	reset_camera_pos()
-	new_game()
+	$OmniLight3D.position = cabinet_size/2 + Vector3(0,0,cabinet_size.length())
+	$OmniLight3D.omni_range = cabinet_size.length()*2
+	$SameGame.game_ended.connect(game_ended)
+	$SameGame.score_changed.connect(update_score_label)
+	$SameGame.init(cabinet_size)
 
-func new_game() -> void:
-	점수 = 0
-	update_score_label()
-	for n in $CO3DContainer.get_children():
-		n.queue_free()
-	add_co3d()
+func game_ended(game :SameGame) -> void:
+	$SameGame.init(cabinet_size)
 
-func set_walls() -> void:
-	$WallBox.mesh.size = WorldSize
-	$WallBox.position = WorldSize/2 - Vector3(0.5,0.5,0)
-	$OmniLight3D.position = WorldSize/2 + Vector3(0,0,WorldSize.length())
-	$OmniLight3D.omni_range = WorldSize.length()*2
-
-func add_co3d() -> void:
-	co3d_grid = SamegameGrid.new( snappedi(WorldSize.x,1) , snappedi(WorldSize.y,1) )
-	for x :int in WorldSize.x:
-		for y :int in WorldSize.y:
-			var co3d_num = randi_range(0,MaxBallType-1)
-			var b = preload("res://same_game/same_game_tile/same_game_tile.tscn").instantiate().set_type_num(co3d_num
-				).set_height_depth(0.9,0.2
-				).set_char(char_list[co3d_num]
-				).set_color( Color(color_list[co3d_num],0.9)  )
-			b.position = Vector3(x,y,0.5)
-			b.co3d_mouse_entered.connect(co3d_mouse_entered)
-			b.co3d_mouse_exited.connect(co3d_mouse_exited)
-			b.co3d_mouse_pressed.connect(co3d_mouse_pressed)
-			$CO3DContainer.add_child(b)
-			co3d_grid.set_data(x, y, b)
-
-var selected_co3d_list :Array[CollisionObject3D]
-func co3d_mouse_entered(b :CollisionObject3D) -> void:
-	for n in selected_co3d_list:
-		if n != null:
-			n.stop_animation()
-	selected_co3d_list = co3d_grid.find_sameballs(b)
-	for n in selected_co3d_list:
-		n.start_animation()
-
-func co3d_mouse_exited(_b :CollisionObject3D) -> void:
-	for n in selected_co3d_list:
-		if n != null:
-			n.stop_animation()
-
-func update_score_label() -> void:
+func update_score_label(점수 :float) -> void:
 	$"왼쪽패널/점수".text = "현재점수 %d" % 점수
 
-func co3d_mouse_pressed(b :CollisionObject3D) -> void:
-	var co3d_list = co3d_grid.find_sameballs(b)
-	점수 += pow(co3d_list.size(), 2) as int
-	update_score_label()
-	for n in co3d_list:
-		var p2d = n.get_pos2d()
-		co3d_grid.set_data(p2d.x,p2d.y, null)
-		n.queue_free()
-	if co3d_grid.count_data() == 0:
-		$"왼쪽패널/점수기록".text += "\n%d" % 점수
-		new_game.call_deferred()
-		return
-	co3d_grid.fill_down()
-	co3d_grid.fill_left()
-	fix_gridco3d_pos_all()
-
-func fix_gridco3d_pos_all() -> void:
-	for x in co3d_grid.grid_size.x:
-		for y in co3d_grid.grid_size.y:
-			var co3d = co3d_grid.get_data(x,y)
-			if co3d != null:
-				move_ani_data.append({
-					"starttime" : Time.get_unix_time_from_system(),
-					"co3d" : co3d,
-					"startpos" : co3d.position,
-					"dstpos" : Vector3(x, y, 0.5),
-				})
 
 func array_to_multiline_text(a :Array) -> String:
 	var rtn = ""
@@ -120,11 +25,10 @@ func array_to_multiline_text(a :Array) -> String:
 
 var camera_move = false
 func _process(_delta: float) -> void:
-	handle_move_ani()
 	var t = Time.get_unix_time_from_system() /-3.0
 	if camera_move:
-		$Camera3D.position = Vector3(sin(t)*WorldSize.x/2, cos(t)*WorldSize.y/2, WorldSize.length()*0.4 ) + WorldSize/2
-		$Camera3D.look_at(WorldSize/2)
+		$Camera3D.position = Vector3(sin(t)*cabinet_size.x/2, cos(t)*cabinet_size.y/2, cabinet_size.length()*0.4 ) + cabinet_size/2
+		$Camera3D.look_at(cabinet_size/2)
 
 var key2fn = {
 	KEY_ESCAPE:_on_button_esc_pressed,
@@ -147,6 +51,6 @@ func _on_카메라변경_pressed() -> void:
 		reset_camera_pos()
 
 func reset_camera_pos()->void:
-	$Camera3D.position = Vector3(WorldSize.x/2, WorldSize.y/2, WorldSize.x/2 *1.1)
-	$Camera3D.look_at(WorldSize/2)
-	$Camera3D.far = WorldSize.length()
+	$Camera3D.position = Vector3(cabinet_size.x/2, cabinet_size.y/2, cabinet_size.x/2 *1.1)
+	$Camera3D.look_at(cabinet_size/2)
+	$Camera3D.far = cabinet_size.length()
