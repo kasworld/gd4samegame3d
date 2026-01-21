@@ -6,6 +6,7 @@ func _ready() -> void:
 	reset_camera_pos()
 	$OmniLight3D.position = cabinet_size/2 + Vector3(0,0,cabinet_size.length())
 	$OmniLight3D.omni_range = cabinet_size.length()*2
+
 	$SameGame.game_ended.connect(game_ended)
 	$SameGame.score_changed.connect(update_score_label)
 	$SameGame.init(cabinet_size)
@@ -15,13 +16,6 @@ func game_ended(game :SameGame) -> void:
 
 func update_score_label(점수 :float) -> void:
 	$"왼쪽패널/점수".text = "현재점수 %d" % 점수
-
-
-func array_to_multiline_text(a :Array) -> String:
-	var rtn = ""
-	for n in a:
-		rtn += "%s\n" %[n]
-	return rtn
 
 var camera_move = false
 func _process(_delta: float) -> void:
