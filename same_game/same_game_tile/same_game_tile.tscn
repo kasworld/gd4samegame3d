@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://dj1pdhawsxt6b"]
 
-[ext_resource type="Script" uid="uid://tlc0hcmltb3y" path="res://char.gd" id="1_njpxk"]
+[ext_resource type="Script" uid="uid://tlc0hcmltb3y" path="res://same_game/same_game_tile/same_game_tile.gd" id="1_55klt"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5k12k"]
 friction = 0.5
@@ -54,7 +54,7 @@ _data = {
 
 [node name="Char" type="StaticBody3D"]
 physics_material_override = SubResource("PhysicsMaterial_5k12k")
-script = ExtResource("1_njpxk")
+script = ExtResource("1_55klt")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_njpxk")

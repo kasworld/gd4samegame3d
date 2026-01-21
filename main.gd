@@ -56,7 +56,7 @@ func add_co3d() -> void:
 	for x :int in WorldSize.x:
 		for y :int in WorldSize.y:
 			var co3d_num = randi_range(0,MaxBallType-1)
-			var b = preload("res://char.tscn").instantiate().set_type_num(co3d_num
+			var b = preload("res://same_game/same_game_tile/same_game_tile.tscn").instantiate().set_type_num(co3d_num
 				).set_height_depth(0.9,0.2
 				).set_char(char_list[co3d_num]
 				).set_color( Color(color_list[co3d_num],0.9)  )

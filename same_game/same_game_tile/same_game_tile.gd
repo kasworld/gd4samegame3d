@@ -1,34 +1,34 @@
 extends StaticBody3D
-class_name Char
+class_name SameGameTile
 
-signal co3d_mouse_entered(me :Char)
-signal co3d_mouse_exited(me :Char)
-signal co3d_mouse_pressed(me :Char)
+signal co3d_mouse_entered(me :SameGameTile)
+signal co3d_mouse_exited(me :SameGameTile)
+signal co3d_mouse_pressed(me :SameGameTile)
 
 var type_num :int
 
 func _to_string() -> String:
-	return "Char%d-%s" % [type_num, get_pos2d()]
+	return "SameGameTile%d-%s" % [type_num, get_pos2d()]
 
 func get_pos2d() -> Vector2i:
 	return Vector2i( snappedi(position.x,1), snappedi(position.y,1) )
 
-func set_type_num(typenum :int) -> Char:
+func set_type_num(typenum :int) -> SameGameTile:
 	type_num = typenum
 	return self
 
-func set_material(mat :Material) -> Char:
+func set_material(mat :Material) -> SameGameTile:
 	$MeshInstance3D.mesh.material = mat
 	return self
 
-func set_color(co :Color) -> Char:
+func set_color(co :Color) -> SameGameTile:
 	$MeshInstance3D.mesh.material.albedo_color = co
 	return self
 
 func get_color() -> Color:
 	return $MeshInstance3D.mesh.material.albedo_color
 
-func set_height_depth(h :float, d :float) -> Char:
+func set_height_depth(h :float, d :float) -> SameGameTile:
 	$MeshInstance3D.mesh.depth = d
 	$CollisionShape3D.shape.size.y = h
 	$CollisionShape3D.shape.size.z = h
@@ -36,7 +36,7 @@ func set_height_depth(h :float, d :float) -> Char:
 	$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.y * 0.9 * $MeshInstance3D.mesh.text.length()
 	return self
 
-func set_char(s :String) -> Char:
+func set_char(s :String) -> SameGameTile:
 	$MeshInstance3D.mesh.text = s
 	$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.y * 0.9 * $MeshInstance3D.mesh.text.length()
 	return self
