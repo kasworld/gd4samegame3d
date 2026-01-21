@@ -4,7 +4,7 @@ class_name SameGame
 signal score_changed(점수 :float)
 signal game_ended(game :SameGame)
 
-const MaxBallType := 4
+const MaxBallType := 2
 var color_list := [
 	Color.RED,
 	Color.GREEN,
@@ -93,7 +93,7 @@ func co3d_mouse_pressed(b :CollisionObject3D) -> void:
 		co3d_grid.set_data(p2d.x,p2d.y, null)
 		n.queue_free()
 	if co3d_grid.count_data() == 0:
-		$"왼쪽패널/점수기록".text += "\n%d" % 점수
+		score_changed.emit(점수)
 		game_ended.emit(self)
 		return
 	co3d_grid.fill_down()
