@@ -1,0 +1,363 @@
+class_name NamedColors
+
+static func random_color(clist = color_list) -> Color:
+	return clist.pick_random()
+
+static func iter_color(i :int) -> Color:
+	return color_list[i%color_list.size()]
+
+static func filter_light_color_list(l :float= 0.5) -> Array:
+	var rtn := []
+	for i in color_list:
+		if i.get_luminance() > l:
+			rtn.append(i)
+	return rtn
+
+static func filter_dark_color_list(l :float= 0.5, clist = color_list) -> Array:
+	var rtn := []
+	for i in clist:
+		if i.get_luminance() < l:
+			rtn.append(i)
+	return rtn
+
+static func is_red_like(co :Color) -> bool:
+	return co.r > co.g and co.r > co.b
+
+static func is_blue_like(co :Color) -> bool:
+	return co.b > co.g and co.b > co.r
+
+static func is_green_like(co :Color) -> bool:
+	return co.g > co.r and co.g > co.b
+
+static func is_yellow_like(co :Color) -> bool:
+	return co.r > co.b and co.g > co.b
+
+static func is_cyan_like(co :Color) -> bool:
+	return co.b > co.r and co.g > co.r
+
+static func is_magenta_like(co :Color) -> bool:
+	return co.b > co.g and co.r > co.g
+
+static func filter_red_color_list(clist :Array[Color] = color_list) -> Array:
+	return clist.filter(is_red_like)
+
+static func filter_blue_color_list(clist :Array[Color] = color_list) -> Array:
+	return clist.filter(is_blue_like)
+
+static func filter_green_color_list(clist :Array[Color] = color_list) -> Array:
+	return clist.filter(is_green_like)
+
+static func filter_yellow_color_list(clist :Array[Color] = color_list) -> Array:
+	return clist.filter(is_yellow_like)
+
+static func filter_cyan_color_list(clist :Array[Color] = color_list) -> Array:
+	return clist.filter(is_cyan_like)
+
+static func filter_magenta_color_list(clist :Array[Color] = color_list) -> Array:
+	return clist.filter(is_magenta_like)
+
+
+const color_list :Array[Color]= [
+Color.ALICE_BLUE,
+Color.ANTIQUE_WHITE,
+Color.AQUA,
+Color.AQUAMARINE,
+Color.AZURE,
+Color.BEIGE,
+Color.BISQUE,
+Color.BLACK,
+Color.BLANCHED_ALMOND,
+Color.BLUE,
+Color.BLUE_VIOLET,
+Color.BROWN,
+Color.BURLYWOOD,
+Color.CADET_BLUE,
+Color.CHARTREUSE,
+Color.CHOCOLATE,
+Color.CORAL,
+Color.CORNFLOWER_BLUE,
+Color.CORNSILK,
+Color.CRIMSON,
+Color.CYAN,
+Color.DARK_BLUE,
+Color.DARK_CYAN,
+Color.DARK_GOLDENROD,
+Color.DARK_GRAY,
+Color.DARK_GREEN,
+Color.DARK_KHAKI,
+Color.DARK_MAGENTA,
+Color.DARK_OLIVE_GREEN,
+Color.DARK_ORANGE,
+Color.DARK_ORCHID,
+Color.DARK_RED,
+Color.DARK_SALMON,
+Color.DARK_SEA_GREEN,
+Color.DARK_SLATE_BLUE,
+Color.DARK_SLATE_GRAY,
+Color.DARK_TURQUOISE,
+Color.DARK_VIOLET,
+Color.DEEP_PINK,
+Color.DEEP_SKY_BLUE,
+Color.DIM_GRAY,
+Color.DODGER_BLUE,
+Color.FIREBRICK,
+Color.FLORAL_WHITE,
+Color.FOREST_GREEN,
+Color.FUCHSIA,
+Color.GAINSBORO,
+Color.GHOST_WHITE,
+Color.GOLD,
+Color.GOLDENROD,
+Color.GRAY,
+Color.GREEN,
+Color.GREEN_YELLOW,
+Color.HONEYDEW,
+Color.HOT_PINK,
+Color.INDIAN_RED,
+Color.INDIGO,
+Color.IVORY,
+Color.KHAKI,
+Color.LAVENDER,
+Color.LAVENDER_BLUSH,
+Color.LAWN_GREEN,
+Color.LEMON_CHIFFON,
+Color.LIGHT_BLUE,
+Color.LIGHT_CORAL,
+Color.LIGHT_CYAN,
+Color.LIGHT_GOLDENROD,
+Color.LIGHT_GRAY,
+Color.LIGHT_GREEN,
+Color.LIGHT_PINK,
+Color.LIGHT_SALMON,
+Color.LIGHT_SEA_GREEN,
+Color.LIGHT_SKY_BLUE,
+Color.LIGHT_SLATE_GRAY,
+Color.LIGHT_STEEL_BLUE,
+Color.LIGHT_YELLOW,
+Color.LIME,
+Color.LIME_GREEN,
+Color.LINEN,
+Color.MAGENTA,
+Color.MAROON,
+Color.MEDIUM_AQUAMARINE,
+Color.MEDIUM_BLUE,
+Color.MEDIUM_ORCHID,
+Color.MEDIUM_PURPLE,
+Color.MEDIUM_SEA_GREEN,
+Color.MEDIUM_SLATE_BLUE,
+Color.MEDIUM_SPRING_GREEN,
+Color.MEDIUM_TURQUOISE,
+Color.MEDIUM_VIOLET_RED,
+Color.MIDNIGHT_BLUE,
+Color.MINT_CREAM,
+Color.MISTY_ROSE,
+Color.MOCCASIN,
+Color.NAVAJO_WHITE,
+Color.NAVY_BLUE,
+Color.OLD_LACE,
+Color.OLIVE,
+Color.OLIVE_DRAB,
+Color.ORANGE,
+Color.ORANGE_RED,
+Color.ORCHID,
+Color.PALE_GOLDENROD,
+Color.PALE_GREEN,
+Color.PALE_TURQUOISE,
+Color.PALE_VIOLET_RED,
+Color.PAPAYA_WHIP,
+Color.PEACH_PUFF,
+Color.PERU,
+Color.PINK,
+Color.PLUM,
+Color.POWDER_BLUE,
+Color.PURPLE,
+Color.REBECCA_PURPLE,
+Color.RED,
+Color.ROSY_BROWN,
+Color.ROYAL_BLUE,
+Color.SADDLE_BROWN,
+Color.SALMON,
+Color.SANDY_BROWN,
+Color.SEA_GREEN,
+Color.SEASHELL,
+Color.SIENNA,
+Color.SILVER,
+Color.SKY_BLUE,
+Color.SLATE_BLUE,
+Color.SLATE_GRAY,
+Color.SNOW,
+Color.SPRING_GREEN,
+Color.STEEL_BLUE,
+Color.TAN,
+Color.TEAL,
+Color.THISTLE,
+Color.TOMATO,
+#Color.TRANSPARENT,
+Color.TURQUOISE,
+Color.VIOLET,
+Color.WEB_GRAY,
+Color.WEB_GREEN,
+Color.WEB_MAROON,
+Color.WEB_PURPLE,
+Color.WHEAT,
+Color.WHITE,
+Color.WHITE_SMOKE,
+Color.YELLOW,
+Color.YELLOW_GREEN,
+]
+
+## cannot use dictionary because same color value exist in color list
+static func get_colorname_by_color(co :Color)->String:
+	for v in color_to_name:
+		if co == v[0]:
+			return v[1]
+	return co.to_html()
+
+const color_to_name := [
+[Color.ALICE_BLUE, "ALICE_BLUE"],
+[Color.ANTIQUE_WHITE, "ANTIQUE_WHITE"],
+[Color.AQUA, "AQUA"],
+[Color.AQUAMARINE, "AQUAMARINE"],
+[Color.AZURE, "AZURE"],
+[Color.BEIGE, "BEIGE"],
+[Color.BISQUE, "BISQUE"],
+[Color.BLACK, "BLACK"],
+[Color.BLANCHED_ALMOND, "BLANCHED_ALMOND"],
+[Color.BLUE, "BLUE"],
+[Color.BLUE_VIOLET, "BLUE_VIOLET"],
+[Color.BROWN, "BROWN"],
+[Color.BURLYWOOD, "BURLYWOOD"],
+[Color.CADET_BLUE, "CADET_BLUE"],
+[Color.CHARTREUSE, "CHARTREUSE"],
+[Color.CHOCOLATE, "CHOCOLATE"],
+[Color.CORAL, "CORAL"],
+[Color.CORNFLOWER_BLUE, "CORNFLOWER_BLUE"],
+[Color.CORNSILK, "CORNSILK"],
+[Color.CRIMSON, "CRIMSON"],
+[Color.CYAN, "CYAN"],
+[Color.DARK_BLUE, "DARK_BLUE"],
+[Color.DARK_CYAN, "DARK_CYAN"],
+[Color.DARK_GOLDENROD, "DARK_GOLDENROD"],
+[Color.DARK_GRAY, "DARK_GRAY"],
+[Color.DARK_GREEN, "DARK_GREEN"],
+[Color.DARK_KHAKI, "DARK_KHAKI"],
+[Color.DARK_MAGENTA, "DARK_MAGENTA"],
+[Color.DARK_OLIVE_GREEN, "DARK_OLIVE_GREEN"],
+[Color.DARK_ORANGE, "DARK_ORANGE"],
+[Color.DARK_ORCHID, "DARK_ORCHID"],
+[Color.DARK_RED, "DARK_RED"],
+[Color.DARK_SALMON, "DARK_SALMON"],
+[Color.DARK_SEA_GREEN, "DARK_SEA_GREEN"],
+[Color.DARK_SLATE_BLUE, "DARK_SLATE_BLUE"],
+[Color.DARK_SLATE_GRAY, "DARK_SLATE_GRAY"],
+[Color.DARK_TURQUOISE, "DARK_TURQUOISE"],
+[Color.DARK_VIOLET, "DARK_VIOLET"],
+[Color.DEEP_PINK, "DEEP_PINK"],
+[Color.DEEP_SKY_BLUE, "DEEP_SKY_BLUE"],
+[Color.DIM_GRAY, "DIM_GRAY"],
+[Color.DODGER_BLUE, "DODGER_BLUE"],
+[Color.FIREBRICK, "FIREBRICK"],
+[Color.FLORAL_WHITE, "FLORAL_WHITE"],
+[Color.FOREST_GREEN, "FOREST_GREEN"],
+[Color.FUCHSIA, "FUCHSIA"],
+[Color.GAINSBORO, "GAINSBORO"],
+[Color.GHOST_WHITE, "GHOST_WHITE"],
+[Color.GOLD, "GOLD"],
+[Color.GOLDENROD, "GOLDENROD"],
+[Color.GRAY, "GRAY"],
+[Color.GREEN, "GREEN"],
+[Color.GREEN_YELLOW, "GREEN_YELLOW"],
+[Color.HONEYDEW, "HONEYDEW"],
+[Color.HOT_PINK, "HOT_PINK"],
+[Color.INDIAN_RED, "INDIAN_RED"],
+[Color.INDIGO, "INDIGO"],
+[Color.IVORY, "IVORY"],
+[Color.KHAKI, "KHAKI"],
+[Color.LAVENDER, "LAVENDER"],
+[Color.LAVENDER_BLUSH, "LAVENDER_BLUSH"],
+[Color.LAWN_GREEN, "LAWN_GREEN"],
+[Color.LEMON_CHIFFON, "LEMON_CHIFFON"],
+[Color.LIGHT_BLUE, "LIGHT_BLUE"],
+[Color.LIGHT_CORAL, "LIGHT_CORAL"],
+[Color.LIGHT_CYAN, "LIGHT_CYAN"],
+[Color.LIGHT_GOLDENROD, "LIGHT_GOLDENROD"],
+[Color.LIGHT_GRAY, "LIGHT_GRAY"],
+[Color.LIGHT_GREEN, "LIGHT_GREEN"],
+[Color.LIGHT_PINK, "LIGHT_PINK"],
+[Color.LIGHT_SALMON, "LIGHT_SALMON"],
+[Color.LIGHT_SEA_GREEN, "LIGHT_SEA_GREEN"],
+[Color.LIGHT_SKY_BLUE, "LIGHT_SKY_BLUE"],
+[Color.LIGHT_SLATE_GRAY, "LIGHT_SLATE_GRAY"],
+[Color.LIGHT_STEEL_BLUE, "LIGHT_STEEL_BLUE"],
+[Color.LIGHT_YELLOW, "LIGHT_YELLOW"],
+[Color.LIME, "LIME"],
+[Color.LIME_GREEN, "LIME_GREEN"],
+[Color.LINEN, "LINEN"],
+[Color.MAGENTA, "MAGENTA"],
+[Color.MAROON, "MAROON"],
+[Color.MEDIUM_AQUAMARINE, "MEDIUM_AQUAMARINE"],
+[Color.MEDIUM_BLUE, "MEDIUM_BLUE"],
+[Color.MEDIUM_ORCHID, "MEDIUM_ORCHID"],
+[Color.MEDIUM_PURPLE, "MEDIUM_PURPLE"],
+[Color.MEDIUM_SEA_GREEN, "MEDIUM_SEA_GREEN"],
+[Color.MEDIUM_SLATE_BLUE, "MEDIUM_SLATE_BLUE"],
+[Color.MEDIUM_SPRING_GREEN, "MEDIUM_SPRING_GREEN"],
+[Color.MEDIUM_TURQUOISE, "MEDIUM_TURQUOISE"],
+[Color.MEDIUM_VIOLET_RED, "MEDIUM_VIOLET_RED"],
+[Color.MIDNIGHT_BLUE, "MIDNIGHT_BLUE"],
+[Color.MINT_CREAM, "MINT_CREAM"],
+[Color.MISTY_ROSE, "MISTY_ROSE"],
+[Color.MOCCASIN, "MOCCASIN"],
+[Color.NAVAJO_WHITE, "NAVAJO_WHITE"],
+[Color.NAVY_BLUE, "NAVY_BLUE"],
+[Color.OLD_LACE, "OLD_LACE"],
+[Color.OLIVE, "OLIVE"],
+[Color.OLIVE_DRAB, "OLIVE_DRAB"],
+[Color.ORANGE, "ORANGE"],
+[Color.ORANGE_RED, "ORANGE_RED"],
+[Color.ORCHID, "ORCHID"],
+[Color.PALE_GOLDENROD, "PALE_GOLDENROD"],
+[Color.PALE_GREEN, "PALE_GREEN"],
+[Color.PALE_TURQUOISE, "PALE_TURQUOISE"],
+[Color.PALE_VIOLET_RED, "PALE_VIOLET_RED"],
+[Color.PAPAYA_WHIP, "PAPAYA_WHIP"],
+[Color.PEACH_PUFF, "PEACH_PUFF"],
+[Color.PERU, "PERU"],
+[Color.PINK, "PINK"],
+[Color.PLUM, "PLUM"],
+[Color.POWDER_BLUE, "POWDER_BLUE"],
+[Color.PURPLE, "PURPLE"],
+[Color.REBECCA_PURPLE, "REBECCA_PURPLE"],
+[Color.RED, "RED"],
+[Color.ROSY_BROWN, "ROSY_BROWN"],
+[Color.ROYAL_BLUE, "ROYAL_BLUE"],
+[Color.SADDLE_BROWN, "SADDLE_BROWN"],
+[Color.SALMON, "SALMON"],
+[Color.SANDY_BROWN, "SANDY_BROWN"],
+[Color.SEA_GREEN, "SEA_GREEN"],
+[Color.SEASHELL, "SEASHELL"],
+[Color.SIENNA, "SIENNA"],
+[Color.SILVER, "SILVER"],
+[Color.SKY_BLUE, "SKY_BLUE"],
+[Color.SLATE_BLUE, "SLATE_BLUE"],
+[Color.SLATE_GRAY, "SLATE_GRAY"],
+[Color.SNOW, "SNOW"],
+[Color.SPRING_GREEN, "SPRING_GREEN"],
+[Color.STEEL_BLUE, "STEEL_BLUE"],
+[Color.TAN, "TAN"],
+[Color.TEAL, "TEAL"],
+[Color.THISTLE, "THISTLE"],
+[Color.TOMATO, "TOMATO"],
+#[Color.TRANSPARENT, "TRANSPARENT"],
+[Color.TURQUOISE, "TURQUOISE"],
+[Color.VIOLET, "VIOLET"],
+[Color.WEB_GRAY, "WEB_GRAY"],
+[Color.WEB_GREEN, "WEB_GREEN"],
+[Color.WEB_MAROON, "WEB_MAROON"],
+[Color.WEB_PURPLE, "WEB_PURPLE"],
+[Color.WHEAT, "WHEAT"],
+[Color.WHITE, "WHITE"],
+[Color.WHITE_SMOKE, "WHITE_SMOKE"],
+[Color.YELLOW, "YELLOW"],
+[Color.YELLOW_GREEN, "YELLOW_GREEN"],
+]

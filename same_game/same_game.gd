@@ -31,7 +31,6 @@ func pos3d_to_pos2d( pos :Vector3 ) -> Vector2i:
 		snappedi( (pos.y + cabinet_size.y/2 - tile_size.y/2) / tile_size.y ,1 ),
 	)
 
-
 var char_list := ["♥","♣","♠","♦","★","☆"]
 var co3d_grid :SamegameGrid # [x][y]
 var 점수 :int
@@ -52,24 +51,16 @@ func new_game() -> void:
 		n.queue_free()
 	add_co3d()
 
-var move_ani_data := [] # starttime, co3d , startpos, dstpos
-func handle_move_ani() -> void:
-	# del old data
-	var new_data := []
-	var anidur := 0.5
-	var nowtime := Time.get_unix_time_from_system()
-	for mad in move_ani_data:
-		if nowtime - mad.starttime < anidur:
-			new_data.append(mad)
-		else :
-			mad.co3d.position = mad.dstpos
-	move_ani_data = new_data
-	for mad in move_ani_data:
-		var rate = (nowtime - mad.starttime) / anidur
-		mad.co3d.position = lerp(mad.startpos, mad.dstpos, rate)
+var move_ani := SimpleAnimation.new()
+func fix_gridco3d_pos_all() -> void:
+	for x in co3d_grid.grid_size.x:
+		for y in co3d_grid.grid_size.y:
+			var co3d = co3d_grid.get_data(x,y)
+			if co3d != null:
+				move_ani.start_move("move", co3d, co3d.position, pos2d_to_pos3d(x,y) , 0.5)
 
 func _process(_delta: float) -> void:
-	handle_move_ani()
+	move_ani.handle_animation()
 
 func add_co3d() -> void:
 	co3d_grid = SamegameGrid.new( game_size.x , game_size.y )
@@ -142,16 +133,3 @@ func find_sameballs(b :CollisionObject3D) -> Array[CollisionObject3D]:
 					continue
 				to_visit_pos.append(to_pos)
 	return found_balls
-
-
-func fix_gridco3d_pos_all() -> void:
-	for x in co3d_grid.grid_size.x:
-		for y in co3d_grid.grid_size.y:
-			var co3d = co3d_grid.get_data(x,y)
-			if co3d != null:
-				move_ani_data.append({
-					"starttime" : Time.get_unix_time_from_system(),
-					"co3d" : co3d,
-					"startpos" : co3d.position,
-					"dstpos" : Vector3(x, y, 0.5),
-				})
