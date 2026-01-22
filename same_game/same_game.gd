@@ -39,7 +39,8 @@ func init(sz :Vector3) -> SameGame:
 	$WallBox.mesh.size = cabinet_size
 	$WallBox.position =  - Vector3(0.5,0.5,0)
 	cabinet_size = sz
-	tile_size = Vector3(cabinet_size.x / game_size.x, cabinet_size.y / game_size.y, cabinet_size.y / game_size.y /4 )
+	tile_size = Vector3(cabinet_size.x / game_size.x, cabinet_size.y / game_size.y, cabinet_size.y / game_size.y )
+	SameGameTile.tile_size = tile_size
 	SameGameTile.calc_pos_in_grid = pos3d_to_pos2d
 	new_game()
 	return self
@@ -68,9 +69,8 @@ func add_co3d() -> void:
 		for y :int in game_size.y:
 			var co3d_num = randi_range(0,MaxBallType-1)
 			var b = preload("res://same_game/same_game_tile/same_game_tile.tscn").instantiate().set_type_num(co3d_num
-				).set_size(tile_size
 				).set_char(char_list[co3d_num]
-				).set_color( Color(color_list[co3d_num],0.9)  )
+				).set_color( color_list[co3d_num] )
 			b.position = pos2d_to_pos3d(x,y)
 			b.co3d_mouse_entered.connect(co3d_mouse_entered)
 			b.co3d_mouse_exited.connect(co3d_mouse_exited)

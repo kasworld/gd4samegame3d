@@ -5,17 +5,13 @@ signal co3d_mouse_entered(me :SameGameTile)
 signal co3d_mouse_exited(me :SameGameTile)
 signal co3d_mouse_pressed(me :SameGameTile)
 
-var type_num :int
 static var calc_pos_in_grid :Callable
+static var tile_size :Vector3
+
 func _to_string() -> String:
 	return "SameGameTile%d-%s" % [type_num, calc_pos_in_grid.call(position)]
 
-#func get_pos2d() -> Vector2i:
-	#return Vector2i(
-		#snappedi(position.x,1),
-		#snappedi(position.y,1),
-	#)
-
+var type_num :int
 func set_type_num(typenum :int) -> SameGameTile:
 	type_num = typenum
 	return self
@@ -31,16 +27,11 @@ func set_color(co :Color) -> SameGameTile:
 func get_color() -> Color:
 	return $MeshInstance3D.mesh.material.albedo_color
 
-func set_size( sz :Vector3) -> SameGameTile:
-	$MeshInstance3D.mesh.depth = sz.z
-	$CollisionShape3D.shape.size = sz
-	$MeshInstance3D.mesh.pixel_size = sz.y/10
-	#$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.y * 0.9 * $MeshInstance3D.mesh.text.length()
-	return self
-
 func set_char(s :String) -> SameGameTile:
 	$MeshInstance3D.mesh.text = s
-	$CollisionShape3D.shape.size.x = $CollisionShape3D.shape.size.y * 0.9 * $MeshInstance3D.mesh.text.length()
+	$MeshInstance3D.mesh.depth = tile_size.z/4
+	$CollisionShape3D.shape.size = tile_size
+	$MeshInstance3D.mesh.pixel_size = tile_size.y/10
 	return self
 
 func _on_mouse_entered() -> void:
