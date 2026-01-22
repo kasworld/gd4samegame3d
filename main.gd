@@ -1,6 +1,6 @@
 extends Node3D
 
-var cabinet_size := Vector3(40,22,1)
+var cabinet_size := Vector3(40,22,10)
 
 func _ready() -> void:
 	reset_camera_pos()
@@ -22,7 +22,7 @@ func _process(_delta: float) -> void:
 	var t = Time.get_unix_time_from_system() /-3.0
 	if camera_move:
 		$Camera3D.position = Vector3(sin(t)*cabinet_size.x/2, cos(t)*cabinet_size.y/2, cabinet_size.length()*0.4 ) + cabinet_size/2
-		$Camera3D.look_at(cabinet_size/2)
+		$Camera3D.look_at(Vector3.ZERO)
 
 var key2fn = {
 	KEY_ESCAPE:_on_button_esc_pressed,
@@ -45,6 +45,6 @@ func _on_카메라변경_pressed() -> void:
 		reset_camera_pos()
 
 func reset_camera_pos()->void:
-	$Camera3D.position = Vector3(cabinet_size.x/2, cabinet_size.y/2, cabinet_size.x/2 *1.1)
-	$Camera3D.look_at(cabinet_size/2)
+	$Camera3D.position = Vector3(0, 0, cabinet_size.x/2 *1.1)
+	$Camera3D.look_at(Vector3.ZERO)
 	$Camera3D.far = cabinet_size.length()

@@ -1,4 +1,4 @@
-extends Node2D
+extends Node3D
 class_name SameGame
 
 signal score_changed(점수 :float)
@@ -16,20 +16,37 @@ var color_list := [
 	Color.BLACK,
 ]
 
-var BallRadius :float
 var cabinet_size :Vector3
+var game_size := Vector2(16,9)
+var tile_size :Vector3
+
+func pos2d_to_pos3d( x :int, y :int) -> Vector3:
+	return Vector3(
+		float(x) * tile_size.x - cabinet_size.x/2 + tile_size.x/2,
+		float(y) *tile_size.y -cabinet_size.y/2 + tile_size.y/2,
+		0.0)
+func pos3d_to_pos2d( pos :Vector3 ) -> Vector2i:
+	return Vector2i(
+		snappedi( (pos.x + cabinet_size.x/2 - tile_size.x/2) / tile_size.x ,1 ),
+		snappedi( (pos.y + cabinet_size.y/2 - tile_size.y/2) / tile_size.y ,1 ),
+	)
+
 
 var char_list := ["♥","♣","♠","♦","★","☆"]
 var co3d_grid :SamegameGrid # [x][y]
 var 점수 :int
 
-func init(sz :Vector3) -> void:
-	cabinet_size = sz
-	BallRadius = 0.5 #cabinet_size.z/2
-	점수 = 0
+func init(sz :Vector3) -> SameGame:
 	$WallBox.mesh.size = cabinet_size
-	$WallBox.position = cabinet_size/2 - Vector3(0.5,0.5,0)
+	$WallBox.position =  - Vector3(0.5,0.5,0)
+	cabinet_size = sz
+	tile_size = Vector3(cabinet_size.x / game_size.x, cabinet_size.y / game_size.y, cabinet_size.y / game_size.y /4 )
+	SameGameTile.calc_pos_in_grid = pos3d_to_pos2d
+	new_game()
+	return self
 
+func new_game() -> void:
+	점수 = 0
 	score_changed.emit(점수)
 	for n in $CO3DContainer.get_children():
 		n.queue_free()
@@ -55,15 +72,15 @@ func _process(_delta: float) -> void:
 	handle_move_ani()
 
 func add_co3d() -> void:
-	co3d_grid = SamegameGrid.new( snappedi(cabinet_size.x,1) , snappedi(cabinet_size.y,1) )
-	for x :int in cabinet_size.x:
-		for y :int in cabinet_size.y:
+	co3d_grid = SamegameGrid.new( game_size.x , game_size.y )
+	for x :int in game_size.x:
+		for y :int in game_size.y:
 			var co3d_num = randi_range(0,MaxBallType-1)
 			var b = preload("res://same_game/same_game_tile/same_game_tile.tscn").instantiate().set_type_num(co3d_num
-				).set_height_depth(0.9,0.2
+				).set_size(tile_size
 				).set_char(char_list[co3d_num]
 				).set_color( Color(color_list[co3d_num],0.9)  )
-			b.position = Vector3(x,y,0.5)
+			b.position = pos2d_to_pos3d(x,y)
 			b.co3d_mouse_entered.connect(co3d_mouse_entered)
 			b.co3d_mouse_exited.connect(co3d_mouse_exited)
 			b.co3d_mouse_pressed.connect(co3d_mouse_pressed)
@@ -75,7 +92,7 @@ func co3d_mouse_entered(b :CollisionObject3D) -> void:
 	for n in selected_co3d_list:
 		if n != null:
 			n.stop_animation()
-	selected_co3d_list = co3d_grid.find_sameballs(b)
+	selected_co3d_list = find_sameballs(b)
 	for n in selected_co3d_list:
 		n.start_animation()
 
@@ -85,11 +102,11 @@ func co3d_mouse_exited(_b :CollisionObject3D) -> void:
 			n.stop_animation()
 
 func co3d_mouse_pressed(b :CollisionObject3D) -> void:
-	var co3d_list = co3d_grid.find_sameballs(b)
+	var co3d_list = find_sameballs(b)
 	점수 += pow(co3d_list.size(), 2) as int
 	score_changed.emit(점수)
 	for n in co3d_list:
-		var p2d = n.get_pos2d()
+		var p2d = pos3d_to_pos2d(n.position)
 		co3d_grid.set_data(p2d.x,p2d.y, null)
 		n.queue_free()
 	if co3d_grid.count_data() == 0:
@@ -99,6 +116,33 @@ func co3d_mouse_pressed(b :CollisionObject3D) -> void:
 	co3d_grid.fill_down()
 	co3d_grid.fill_left()
 	fix_gridco3d_pos_all()
+
+func find_sameballs(b :CollisionObject3D) -> Array[CollisionObject3D]:
+	var found_balls :Array[CollisionObject3D] = []
+	var visited_pos :Dictionary # vector2i
+	var to_visit_pos :Array # vector2i
+	to_visit_pos.append(pos3d_to_pos2d(b.position) )
+	while not to_visit_pos.is_empty():
+		var current_pos = to_visit_pos.pop_front()
+		if visited_pos.has(current_pos):
+			continue
+		visited_pos[current_pos] = true
+		var current_ball = co3d_grid.grid_data[current_pos.x][current_pos.y]
+		if current_ball == null:
+			continue
+		if current_ball.type_num == b.type_num:
+			found_balls.append(current_ball)
+			for dir in co3d_grid.dir_list:
+				var to_pos = current_pos + dir
+				if to_pos.x < 0 or to_pos.x >= co3d_grid.grid_size.x or to_pos.y < 0 or to_pos.y >= co3d_grid.grid_size.y:
+					continue
+				if co3d_grid.grid_data[current_pos.x][current_pos.y] == null:
+					continue
+				if visited_pos.has(to_pos) :
+					continue
+				to_visit_pos.append(to_pos)
+	return found_balls
+
 
 func fix_gridco3d_pos_all() -> void:
 	for x in co3d_grid.grid_size.x:

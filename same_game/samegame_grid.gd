@@ -27,32 +27,6 @@ func count_data() -> int:
 				rtn +=1
 	return rtn
 
-func find_sameballs(b :CollisionObject3D) -> Array[CollisionObject3D]:
-	var found_balls :Array[CollisionObject3D] = []
-	var visited_pos :Dictionary # vector2i
-	var to_visit_pos :Array # vector2i
-	to_visit_pos.append(b.get_pos2d())
-	while not to_visit_pos.is_empty():
-		var current_pos = to_visit_pos.pop_front()
-		if visited_pos.has(current_pos):
-			continue
-		visited_pos[current_pos] = true
-		var current_ball = grid_data[current_pos.x][current_pos.y]
-		if current_ball == null:
-			continue
-		if current_ball.type_num == b.type_num:
-			found_balls.append(current_ball)
-			for dir in dir_list:
-				var to_pos = current_pos + dir
-				if to_pos.x < 0 or to_pos.x >= grid_size.x or to_pos.y < 0 or to_pos.y >= grid_size.y:
-					continue
-				if grid_data[current_pos.x][current_pos.y] == null:
-					continue
-				if visited_pos.has(to_pos) :
-					continue
-				to_visit_pos.append(to_pos)
-	return found_balls
-
 func fill_down() -> void:
 	for x in grid_size.x:
 		for y in grid_size.y-1:
