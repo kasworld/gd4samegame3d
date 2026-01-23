@@ -1,36 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://b3e38t04xxxxk"]
+[gd_scene load_steps=11 format=3 uid="uid://b3e38t04xxxxk"]
 
 [ext_resource type="Script" uid="uid://pb41ce3i4fi0" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://dhiw0x3resrnx" path="res://same_game/same_game.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message/timed_message.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://ces3a6yv0c5fi" path="res://moving_carmera_light/moving_camera_light.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://dl14flc0fkeyt" path="res://axis_arrow_3d/axis_arrow_3d.tscn" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://clnf86bglf40d" path="res://glass_cabinet/glass_cabinet.tscn" id="6_7mycd"]
 
 [sub_resource type="Theme" id="Theme_h2yge"]
 default_font_size = 48
 
+[sub_resource type="Theme" id="Theme_7mycd"]
+default_font_size = 24
+
+[sub_resource type="SystemFont" id="SystemFont_bejao"]
+
+[sub_resource type="Theme" id="Theme_1bvp3"]
+resource_local_to_scene = true
+default_font = SubResource("SystemFont_bejao")
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_ig7tw")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
-keep_aspect = 0
-fov = 90.0
-
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 5, 15)
-shadow_enabled = true
-shadow_opacity = 0.5
-omni_attenuation = 0.0
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 0, 0)
-shadow_enabled = true
-sky_mode = 1
-
-[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.707107, -0.5, -0.5, 0, 0.707107, -0.707107, 0.707107, 0.5, 0.5, 0, 0, 0)
-visible = false
-shadow_enabled = true
-shadow_opacity = 0.5
-sky_mode = 1
 
 [node name="왼쪽패널" type="VBoxContainer" parent="."]
 offset_right = 40.0
@@ -46,3 +36,28 @@ layout_mode = 2
 text = "점수기록"
 
 [node name="SameGame" parent="." instance=ExtResource("2_0xm2m")]
+
+[node name="오른쪽패널" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_7mycd")
+
+[node name="LabelPerformance" type="Label" parent="오른쪽패널"]
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="LabelInfo" type="Label" parent="오른쪽패널"]
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="TimedMessage" parent="." instance=ExtResource("3_h2yge")]
+theme = SubResource("Theme_1bvp3")
+
+[node name="MovingCameraLightHober" parent="." instance=ExtResource("4_1bvp3")]
+
+[node name="MovingCameraLightAround" parent="." instance=ExtResource("4_1bvp3")]
+
+[node name="AxisArrow3D" parent="." instance=ExtResource("5_lquwl")]
+visible = false
+
+[node name="GlassCabinet" parent="." instance=ExtResource("6_7mycd")]
