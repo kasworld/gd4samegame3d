@@ -45,6 +45,7 @@ func _ready() -> void:
 	$AxisArrow3D.set_colors().set_size(WorldSize.length()/20)
 
 	$GlassCabinet.init(WorldSize)
+	$GlassCabinet.get_camera_light().make_current()
 	same_game_demo($GlassCabinet)
 
 var samegame :SameGame
