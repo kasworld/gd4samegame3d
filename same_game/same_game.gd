@@ -4,7 +4,7 @@ class_name SameGame
 signal score_changed(점수 :float)
 signal game_ended(game :SameGame)
 
-const MaxBallType := 2
+const MaxBallType := 6
 var color_list := [
 	Color.RED,
 	Color.GREEN,
@@ -36,8 +36,6 @@ var co3d_grid :SamegameGrid # [x][y]
 var 점수 :int
 
 func init(sz :Vector3) -> SameGame:
-	$WallBox.mesh.size = cabinet_size
-	$WallBox.position =  - Vector3(0.5,0.5,0)
 	cabinet_size = sz
 	tile_size = Vector3(cabinet_size.x / game_size.x, cabinet_size.y / game_size.y, cabinet_size.y / game_size.y )
 	SameGameTile.tile_size = tile_size

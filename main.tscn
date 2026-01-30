@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b3e38t04xxxxk"]
+[gd_scene format=3 uid="uid://b3e38t04xxxxk"]
 
 [ext_resource type="Script" uid="uid://pb41ce3i4fi0" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://dhiw0x3resrnx" path="res://same_game/same_game.tscn" id="2_0xm2m"]
@@ -15,49 +15,49 @@ default_font_size = 24
 
 [sub_resource type="SystemFont" id="SystemFont_bejao"]
 
-[sub_resource type="Theme" id="Theme_1bvp3"]
+[sub_resource type="Theme" id="Theme_272bh"]
 resource_local_to_scene = true
 default_font = SubResource("SystemFont_bejao")
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=208429016]
 script = ExtResource("1_ig7tw")
 
-[node name="왼쪽패널" type="VBoxContainer" parent="."]
+[node name="왼쪽패널" type="VBoxContainer" parent="." unique_id=1860847352]
 offset_right = 40.0
 offset_bottom = 40.0
 theme = SubResource("Theme_h2yge")
 
-[node name="점수" type="Label" parent="왼쪽패널"]
+[node name="점수" type="Label" parent="왼쪽패널" unique_id=167288881]
 layout_mode = 2
 text = "점수 0"
 
-[node name="점수기록" type="Label" parent="왼쪽패널"]
+[node name="점수기록" type="Label" parent="왼쪽패널" unique_id=1465458301]
 layout_mode = 2
 text = "점수기록"
 
-[node name="SameGame" parent="." instance=ExtResource("2_0xm2m")]
+[node name="SameGame" parent="." unique_id=1731114445 instance=ExtResource("2_0xm2m")]
 
-[node name="오른쪽패널" type="VBoxContainer" parent="."]
+[node name="오른쪽패널" type="VBoxContainer" parent="." unique_id=511386603]
 offset_right = 40.0
 offset_bottom = 40.0
 theme = SubResource("Theme_7mycd")
 
-[node name="LabelPerformance" type="Label" parent="오른쪽패널"]
+[node name="LabelPerformance" type="Label" parent="오른쪽패널" unique_id=2093909320]
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="LabelInfo" type="Label" parent="오른쪽패널"]
+[node name="LabelInfo" type="Label" parent="오른쪽패널" unique_id=1424902480]
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="TimedMessage" parent="." instance=ExtResource("3_h2yge")]
-theme = SubResource("Theme_1bvp3")
+[node name="TimedMessage" parent="." unique_id=882001261 instance=ExtResource("3_h2yge")]
+theme = SubResource("Theme_272bh")
 
-[node name="MovingCameraLightHober" parent="." instance=ExtResource("4_1bvp3")]
+[node name="MovingCameraLightHober" parent="." unique_id=2031522883 instance=ExtResource("4_1bvp3")]
 
-[node name="MovingCameraLightAround" parent="." instance=ExtResource("4_1bvp3")]
+[node name="MovingCameraLightAround" parent="." unique_id=1703404069 instance=ExtResource("4_1bvp3")]
 
-[node name="AxisArrow3D" parent="." instance=ExtResource("5_lquwl")]
+[node name="AxisArrow3D" parent="." unique_id=2121313675 instance=ExtResource("5_lquwl")]
 visible = false
 
-[node name="GlassCabinet" parent="." instance=ExtResource("6_7mycd")]
+[node name="GlassCabinet" parent="." unique_id=1786421208 instance=ExtResource("6_7mycd")]

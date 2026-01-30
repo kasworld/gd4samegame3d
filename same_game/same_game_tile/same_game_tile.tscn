@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dj1pdhawsxt6b"]
+[gd_scene format=3 uid="uid://dj1pdhawsxt6b"]
 
 [ext_resource type="Script" uid="uid://tlc0hcmltb3y" path="res://same_game/same_game_tile/same_game_tile.gd" id="1_55klt"]
+[ext_resource type="FontFile" uid="uid://gdh6qls28unk" path="res://font/HakgyoansimBareondotumR.ttf" id="2_2bp4g"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5k12k"]
 friction = 0.5
@@ -21,7 +22,7 @@ backlight = Color(1, 1, 1, 1)
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_njpxk")
 text = "H"
-font_size = 14
+font = ExtResource("2_2bp4g")
 pixel_size = 0.1
 depth = 0.2
 
@@ -52,20 +53,18 @@ _data = {
 &"new_animation": SubResource("Animation_x8fbi")
 }
 
-[node name="Char" type="StaticBody3D"]
+[node name="Char" type="StaticBody3D" unique_id=1079553109]
 physics_material_override = SubResource("PhysicsMaterial_5k12k")
 script = ExtResource("1_55klt")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=28487286]
 shape = SubResource("BoxShape3D_njpxk")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=753627444]
 mesh = SubResource("TextMesh_5k12k")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_ktgx5")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=62007076]
+libraries/ = SubResource("AnimationLibrary_ktgx5")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

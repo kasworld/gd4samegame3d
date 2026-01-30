@@ -31,7 +31,7 @@ func set_char(s :String) -> SameGameTile:
 	$MeshInstance3D.mesh.text = s
 	$MeshInstance3D.mesh.depth = tile_size.z/4
 	$CollisionShape3D.shape.size = tile_size
-	$MeshInstance3D.mesh.pixel_size = tile_size.y/10
+	$MeshInstance3D.mesh.pixel_size = tile_size.y/13
 	return self
 
 func _on_mouse_entered() -> void:
